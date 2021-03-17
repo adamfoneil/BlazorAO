@@ -1,0 +1,86 @@
+{
+  "Actions": {
+    "merge": [
+      {
+        "Type": 2,
+        "ObjectType": 1,
+        "ObjectName": "dbo.AspNetRoleClaims"
+      },
+      {
+        "Type": 2,
+        "ObjectType": 1,
+        "ObjectName": "dbo.AspNetRoles"
+      },
+      {
+        "Type": 2,
+        "ObjectType": 1,
+        "ObjectName": "dbo.AspNetUserClaims"
+      },
+      {
+        "Type": 2,
+        "ObjectType": 1,
+        "ObjectName": "dbo.AspNetUserLogins"
+      },
+      {
+        "Type": 2,
+        "ObjectType": 1,
+        "ObjectName": "dbo.AspNetUserRoles"
+      },
+      {
+        "Type": 2,
+        "ObjectType": 1,
+        "ObjectName": "dbo.AspNetUserTokens"
+      },
+      {
+        "Type": 2,
+        "ObjectType": 3,
+        "ObjectName": "EmailIndex"
+      },
+      {
+        "Type": 2,
+        "ObjectType": 3,
+        "ObjectName": "UserNameIndex"
+      },
+      {
+        "Type": 2,
+        "ObjectType": 2,
+        "ObjectName": "dbo.AspNetUsers.AccessFailedCount"
+      },
+      {
+        "Type": 2,
+        "ObjectType": 2,
+        "ObjectName": "dbo.AspNetUsers.ConcurrencyStamp"
+      },
+      {
+        "Type": 2,
+        "ObjectType": 2,
+        "ObjectName": "dbo.AspNetUsers.LockoutEnabled"
+      },
+      {
+        "Type": 2,
+        "ObjectType": 2,
+        "ObjectName": "dbo.AspNetUsers.LockoutEnd"
+      },
+      {
+        "Type": 2,
+        "ObjectType": 2,
+        "ObjectName": "dbo.AspNetUsers.NormalizedEmail"
+      },
+      {
+        "Type": 2,
+        "ObjectType": 2,
+        "ObjectName": "dbo.AspNetUsers.NormalizedUserName"
+      },
+      {
+        "Type": 2,
+        "ObjectType": 2,
+        "ObjectName": "dbo.AspNetUsers.PasswordHash"
+      },
+      {
+        "Type": 2,
+        "ObjectType": 2,
+        "ObjectName": "dbo.AspNetUsers.SecurityStamp"
+      }
+    ]
+  }
+}

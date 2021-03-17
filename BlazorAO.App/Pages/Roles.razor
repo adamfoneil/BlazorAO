@@ -1,0 +1,137 @@
+﻿@page "/Roles"
+@inject DapperCX<int, UserProfile> Data
+@inherits AuthComponent
+
+<h3>Roles</h3>
+<p>Use this to experiment with different roles added to your user account.</p>
+
+@if (!IsLoggedIn)
+{ 
+    <div class="alert alert-info">
+        Please login to add and remove roles from yourself. This will let you test application logic based on role.
+    </div>    
+}
+
+@if (roles != null)
+{
+    <p>These are the built-in roles this sample app works with:</p>
+    <ul class="list-unstyled">
+        @foreach (var role in roles)
+        {
+            <li class="my-2">
+                <div>
+                    <div class="d-flex align-items-center">                        
+                        @if (IsLoggedIn)
+                        {
+                            <RadzenSwitch @bind-Value="role.IsEnabled" Change="@((e) => OnRoleSwitch(role.Id, e))"/>                                
+                        }                            
+                        @{ 
+                            var nameClass = (!role.IsEnabled && User.Identity.IsAuthenticated) ? "text-muted" : string.Empty;
+                        }
+                        <span class="@nameClass ml-2">
+                            @role.Name
+                        </span>                                                    
+                    </div>                    
+                </div>
+            </li>
+        }
+    </ul>
+}
+
+<AuthorizeView>    
+    <strong>Important</strong> After updating roles, there are two different ways the changes take effect:
+    <ul>
+        <li><code>Data.User.HasRole</code> takes effect after refreshing the page.</li>
+        <li><code>User.IsInRole</code> takes effect after the user logs out and back in.</li>
+    </ul>    
+</AuthorizeView>
+
+@if (User.IsInRole("Admin"))
+{
+    <p>This is what <strong>Admin</strong> role can see, based on <code>User.IsInRole</code>.</p>
+}
+
+@if (Data.User?.HasRole("Admin") ?? false)
+{
+    <p>This is what <strong>Admin</strong> role can see, based on <code>Data.User.HasRole</code>.</p>
+}
+
+@if (User.IsInRole("Power User"))
+{
+    <p>This is what <strong>Power User</strong> role can see, based on <code>User.IsInRole</code>.</p>
+}
+
+@if (Data.User?.HasRole("Power User") ?? false)
+{
+    <p>This is what <strong>Power User</strong> role can see, based on <code>Data.User.HasRole</code>.</p>
+}
+
+@if (User.IsInRole("Associate"))
+{
+    <p>This is what <strong>Associate</strong> role can see, based on <code>User.IsInRole</code>.</p>
+}
+
+@if (Data.User?.HasRole("Associate") ?? false)
+{
+    <p>This is what <strong>Associate</strong> role can see, based on <code>Data.User.HasRole</code>.</p>
+}
+
+<AuthorizeView Roles="Admin">
+    <p>This is visible to <strong>Admin</strong> role, based on <code>AuthorizeView</code></p>
+</AuthorizeView>
+
+@code { 
+    IEnumerable<Role> roles;
+    BlazorAO.Components.AuthComponent roleChangeTip;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        using (var cn = Data.GetConnection())
+        {
+            await CreateDefaultRoles(cn);
+
+            roles = await Data.QueryAsync(new MyRoles() { UserName = User.Identity?.Name ?? "_none" });
+        }
+    }
+
+    async Task CreateDefaultRoles(IDbConnection cn)
+    {
+        var roles = BuildRoles("Admin", "Power User", "Associate");
+        foreach (var role in roles)
+        {
+            if (!await Data.ExistsWhereAsync<Role>(new { name = role.Name }))
+            {
+                await Data.SaveAsync(cn, role);
+            }
+        }
+    }
+
+    public IEnumerable<Role> BuildRoles(params string[] names) => names.Select(name => new Role()
+    {
+        Name = name,
+        NormalizedName = name,
+        Id = Guid.NewGuid().ToString()
+    });
+
+    async Task OnRoleSwitch(string roleId, bool enabled)
+    {
+        if (enabled)
+        {
+            await Data.QueryAsync(new AddRole()
+            {
+                UserId = Data.User.Id,
+                RoleId = roleId
+            });
+        }
+        else
+        {
+            await Data.QueryAsync(new RemoveRole()
+            {
+                UserId = Data.User.Id,
+                RoleId = roleId
+            });
+        }        
+    }
+}

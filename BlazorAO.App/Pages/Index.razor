@@ -1,7 +1,111 @@
 ﻿@page "/"
+@inject DbCreator DbCreator 
 
-<h1>Hello, world!</h1>
+<div class="text-center">
+    <h1 class="display-3">BlazorAO</h1>
 
-Welcome to your new app.
+    <p class="lead">Hello there! This sample app shows my suggested boilerplate and coding approach for Blazor Server applications.</p>
+    <p>GitHub: <a href="https://github.com/adamfoneil/">my profile</a>, <a href="https://github.com/adamfoneil/BlazorStarter">this repo</a></p>
+</div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@if (!exists)
+{
+    <div class="alert alert-danger my-4">
+        <strong>Database missing</strong>
+        <span>Please initialize the local database by <a href="/Identity/Account/Register">registering</a>, and apply migrations from the database exception page.</span>
+    </div>
+}
+else if (anyUpdates)
+{
+    <div class="alert alert-warning my-4">
+        <strong>Database Updates</strong>
+        <span>Please click this to apply database updates: <button class="btn btn-secondary" @onclick="((args) => ApplyUpdates())">Apply Updates</button></span>
+    </div>
+}
+else if (!updateSuccess ?? false)
+{
+    <div class="alert alert-danger my-4">
+        <strong>Database Update Failed</strong>
+        <span>@message</span>
+    </div>
+}
+else if (updateSuccess ?? false)
+{
+    <div class="alert my-4 alert-success">
+        <span>Database updated successfully</span>
+    </div>
+}
+
+<div class="card-deck">
+    <div class="card p-3">                
+        <div class="card-body">
+            <h5 class="card-title">Components</h5>
+            <p class="card-text">I use <a href="https://blazor.radzen.com/">Radzen Components</a>. They're free and quite capable, 
+            with <a href="https://forum.radzen.com/c/blazor-components">good support</a>.</p>            
+
+            <p class="card-text">I have a few modest <a href="">custom components</a> that I'll demonstrate in depth here.</p>
+        </div>            
+    </div>
+
+    <div class="card p-3">
+        <div class="card-body">
+            <h5 class="card-title">Data</h5>
+            <p class="card-text">I use a Dapper-based approach via my own NuGet package:</p>
+            <p class="card-text">
+                <a href="https://www.nuget.org/packages/Dapper.CX.SqlServer.AspNetCore/">
+                    <img src="https://img.shields.io/nuget/v/Dapper.CX.SqlServer.AspNetCore"/>
+                </a>
+            </p>
+            <p class="card-text">I'm a Dapper maniac! The package above uses a couple projects of mine:
+            <a href="https://github.com/adamfoneil/Dapper.CX">Dapper.CX</a> for CRUD functionality and <a href="https://github.com/adamfoneil/Dapper.QX">Dapper.QX</a> for general-purpose inline SQL. 
+            <a href="https://github.com/adamfoneil/Dapper.QX/wiki">Why?</a></p>
+        </div>        
+    </div>
+
+    <div class="card p-3">
+        <div class="card-body">
+            <h5 class="card-title">Tools</h5>
+            <p class="card-text">These are optional, things I use myself internally:</p>
+            <ul>
+                <li><a href="https://aosoftware.net/modelsync/">ModelSync</a> instead of EF migrations. This is a paid app of mine with a 30-day trial.</li>
+                <li><a href="https://github.com/adamfoneil/Postulate.Zinger">Zinger</a>, a free app for adapting inline SQL for use in C#.</li>
+            </ul>
+        </div>        
+    </div>
+</div>
+
+@code {     
+    bool exists;
+    string message;
+    bool anyUpdates;
+    bool? updateSuccess;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        var dbstate = await DbCreator.DbExistsAsync();
+        exists = dbstate.success;
+        message = dbstate.message;
+
+        if (exists)
+        {
+            anyUpdates = await DbCreator.HasUpdatesAsync();
+        }
+    }
+
+    async Task ApplyUpdates()
+    {
+        var result = await DbCreator.UpdataDatabaseAsync();
+        if (result.success)
+        {
+            anyUpdates = false;
+            updateSuccess = true;
+        }
+        else
+        {
+            updateSuccess = false;
+            message = result.message;
+        }
+    }
+}

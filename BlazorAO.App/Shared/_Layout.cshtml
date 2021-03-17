@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BlazorStarter</title>
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link href="css/site.css" rel="stylesheet" />
+    <link href="~/css/pages.css" rel="stylesheet" />
+    @RenderSection("head", false)
+</head>
+<body>
+    <div class="page">
+        <div class="sidebar">
+            <div class="top-row pl-4 navbar navbar-dark" b-y3olw8z4lo="">
+                <!--!--><a class="navbar-brand" href="" b-y3olw8z4lo="">BlazorStarter</a>
+                <button class="navbar-toggler" b-y3olw8z4lo=""><!--!--><span class="navbar-toggler-icon" b-y3olw8z4lo=""></span></button>
+            </div>
+            <ul class="nav flex-column" b-y3olw8z4lo="">
+                <li class="nav-item px-3" b-y3olw8z4lo="">
+                    <a href="" class="nav-link">
+                        <span class="oi oi-home" aria-hidden="true" b-y3olw8z4lo=""></span> Home
+                    </a>
+                </li>
+                <li class="nav-item px-3" b-y3olw8z4lo="">
+                    <a href="/Wiki" class="nav-link active">
+                        <span class="oi oi-book" b-y3olw8z4lo=""></span> Wiki
+                    </a>
+                </li>
+                <li class="nav-item px-3" b-y3olw8z4lo="">
+                    <a href="/Roles" class="nav-link">
+                        <span class="oi oi-lock-unlocked" b-y3olw8z4lo=""></span> Roles
+                    </a>            
+                </li>
+                <li class="nav-item px-3" b-y3olw8z4lo="">
+                    <a href="/GridCrud" class="nav-link">
+                        <span class="oi oi-grid-three-up" b-y3olw8z4lo=""></span> Radzen Grid Crud
+                    </a>
+                </li>
+                <li class="nav-item px-3" b-y3olw8z4lo="">
+                    <a href="/GridQuery" class="nav-link">
+                        <span class="oi oi-magnifying-glass" b-y3olw8z4lo=""></span> Radzen Grid Query
+                    </a>
+                </li>
+                <li class="nav-item px-3" b-y3olw8z4lo="">
+                    <a href="/EditForms" class="nav-link">
+                        <span class="oi oi-spreadsheet" b-y3olw8z4lo=""></span> Data Entry Forms
+                    </a>
+                </li>
+                <li class="nav-item px-3" b-y3olw8z4lo="">
+                    <a href="/State" class="nav-link">
+                        <span class="oi oi-hard-drive" b-y3olw8z4lo=""></span> State Management
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main">
+            <div class="top-row px-4 auth">
+                <LoginDisplay />
+                <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            </div>
+
+            <div class="content px-4">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    @RenderSection("script", false)
+</body>
+</html>

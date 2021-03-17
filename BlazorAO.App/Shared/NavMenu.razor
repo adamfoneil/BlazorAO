@@ -7,19 +7,39 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
-        <li class="nav-item px-3">
+       <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            <NavLink class="nav-link" href="/Wiki" Match="NavLinkMatch.All">
+                <span class="oi oi-book"></span> Wiki
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            <NavLink class="nav-link" href="/Roles">
+                <span class="oi oi-lock-unlocked"></span> Roles
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/GridCrud">
+                <span class="oi oi-grid-three-up"></span> Radzen Grid Crud
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/GridQuery">
+                <span class="oi oi-magnifying-glass"></span> Radzen Grid Query
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/EditForms">
+                <span class="oi oi-spreadsheet"></span> Data Entry Forms
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/State">
+                <span class="oi oi-hard-drive"></span> State Management
             </NavLink>
         </li>
     </ul>

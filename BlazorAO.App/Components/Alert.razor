@@ -1,0 +1,33 @@
+﻿<div class="alert @CssClass()">
+    @ChildContent
+</div>
+
+@code {
+    public enum AlertType
+    {
+        Info,
+        Warning,
+        Danger,
+        Success
+    }
+
+    [Parameter]
+    public AlertType Type { get; set; }
+
+    [Parameter]
+    public bool IsDismissable { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    private string CssClass() => AlertCss() + " " + DissmissCss();
+
+    private string DissmissCss() => (IsDismissable) ? "alert-dismissable" : string.Empty;
+
+    private string AlertCss() =>
+        (Type == AlertType.Danger) ? "alert-danger" :
+        (Type == AlertType.Warning) ? "alert-warning" :
+        (Type == AlertType.Success) ? "alert-success" :
+        (Type == AlertType.Info) ? "alert-info" :
+        throw new ArgumentException(nameof(Type));    
+}
