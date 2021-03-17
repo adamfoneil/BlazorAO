@@ -22,4 +22,8 @@
     <ProjectReference Include="..\BlazorAO.Models\BlazorAO.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\data\" />
+  </ItemGroup>
+
 </Project>
