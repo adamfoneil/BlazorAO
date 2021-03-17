@@ -9,7 +9,7 @@ namespace BlazorAO.Queries
     {
         public MyRoles() : base(
             @"SELECT 
-                [r].*,
+                [r].*, [r].[Id] AS [RoleId],
                 COALESCE((
                     (SELECT 1 
                     FROM [dbo].[AspNetUserRoles] [ur]

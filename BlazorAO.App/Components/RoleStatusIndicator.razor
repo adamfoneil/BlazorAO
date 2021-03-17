@@ -1,0 +1,28 @@
+﻿@inject DapperCX<int, UserProfile> Data
+@inherits AuthComponent
+
+@if (User.IsInRole(RoleName))
+{
+    <p>This is what <strong>@RoleName</strong> role can see, based on <code>User.IsInRole</code>.
+    @if (!Data?.User.HasRole(RoleName) ?? false)
+    {
+        <span class="highlight">Will be removed after logging out and back in.</span>
+    }
+    </p>    
+}
+
+@if (Data.User?.HasRole(RoleName) ?? false)
+{
+    <p>
+        This is what <strong>@RoleName</strong> role can see, based on <code>Data.User.HasRole</code>.
+        @if (!User.IsInRole(RoleName))
+        {
+            <span class="highlight">Must log out and back in for <code>User.IsInRole</code> to reflect this change.</span>
+        }
+    </p>
+}
+
+@code {
+    [Parameter]
+    public string RoleName { get; set; }
+}

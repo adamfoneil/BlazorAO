@@ -23,7 +23,7 @@
                     <div class="d-flex align-items-center">                        
                         @if (IsLoggedIn)
                         {
-                            <RadzenSwitch @bind-Value="role.IsEnabled" Change="@((e) => OnRoleSwitch(role.Id, e))"/>                                
+                            <RadzenSwitch @bind-Value="role.IsEnabled" Change="@((e) => OnRoleSwitch(role.RoleId, e))"/>                                
                         }                            
                         @{ 
                             var nameClass = (!role.IsEnabled && User.Identity.IsAuthenticated) ? "text-muted" : string.Empty;
@@ -46,35 +46,9 @@
     </ul>    
 </AuthorizeView>
 
-@if (User.IsInRole("Admin"))
-{
-    <p>This is what <strong>Admin</strong> role can see, based on <code>User.IsInRole</code>.</p>
-}
-
-@if (Data.User?.HasRole("Admin") ?? false)
-{
-    <p>This is what <strong>Admin</strong> role can see, based on <code>Data.User.HasRole</code>.</p>
-}
-
-@if (User.IsInRole("Power User"))
-{
-    <p>This is what <strong>Power User</strong> role can see, based on <code>User.IsInRole</code>.</p>
-}
-
-@if (Data.User?.HasRole("Power User") ?? false)
-{
-    <p>This is what <strong>Power User</strong> role can see, based on <code>Data.User.HasRole</code>.</p>
-}
-
-@if (User.IsInRole("Associate"))
-{
-    <p>This is what <strong>Associate</strong> role can see, based on <code>User.IsInRole</code>.</p>
-}
-
-@if (Data.User?.HasRole("Associate") ?? false)
-{
-    <p>This is what <strong>Associate</strong> role can see, based on <code>Data.User.HasRole</code>.</p>
-}
+<RoleStatusIndicator RoleName="Admin"/>
+<RoleStatusIndicator RoleName="Power User"/>
+<RoleStatusIndicator RoleName="Associate"/>
 
 <AuthorizeView Roles="Admin">
     <p>This is visible to <strong>Admin</strong> role, based on <code>AuthorizeView</code></p>
@@ -82,7 +56,7 @@
 
 @code { 
     IEnumerable<Role> roles;
-    BlazorAO.Components.AuthComponent roleChangeTip;
+    AuthComponent roleChangeTip;
 
     protected override async Task OnInitializedAsync()
     {
@@ -92,7 +66,7 @@
         {
             await CreateDefaultRoles(cn);
 
-            roles = await Data.QueryAsync(new MyRoles() { UserName = User.Identity?.Name ?? "_none" });
+            roles = await Data.QueryAsync(new MyRoles() { UserName = User?.Identity?.Name ?? "_none" });
         }
     }
 
@@ -103,16 +77,18 @@
         {
             if (!await Data.ExistsWhereAsync<Role>(new { name = role.Name }))
             {
-                await Data.SaveAsync(cn, role);
+                // because AspNet built-in tables use guids, I need some crazy workarounds to handle the crud SQL
+                var insertSql = AO.Models.Static.SqlBuilder.Insert<Role>();
+                await cn.ExecuteAsync(insertSql, role);
             }
         }
     }
 
-    public IEnumerable<Role> BuildRoles(params string[] names) => names.Select(name => new Role()
+    private IEnumerable<Role> BuildRoles(params string[] names) => names.Select(name => new Role()
     {
         Name = name,
         NormalizedName = name,
-        Id = Guid.NewGuid().ToString()
+        RoleId = Guid.NewGuid().ToString()
     });
 
     async Task OnRoleSwitch(string roleId, bool enabled)
@@ -132,6 +108,6 @@
                 UserId = Data.User.Id,
                 RoleId = roleId
             });
-        }        
+        }
     }
 }
