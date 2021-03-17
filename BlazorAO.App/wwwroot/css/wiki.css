@@ -1,0 +1,17 @@
+﻿.file-banner {
+    background-color:#adadad;
+    color:white
+}
+
+.file-banner a:link, .file-banner a:visited {
+    color:white
+}
+
+.line-number {
+    color:#adadad;
+    padding-right:15px
+}
+
+.highlight {
+    background-color:#ffd800
+}
