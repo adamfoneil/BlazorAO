@@ -45,10 +45,10 @@
 
     IEnumerable<MenuItem> GetMenuItems() => new MenuItem[]
     {
-        new MenuItem() { Text = "Home", Href = "/Index", Icon = "oi-home", IsEnabled = true },
+        new MenuItem() { Text = "Home", Href = "/", Icon = "oi-home", IsEnabled = true },
         new MenuItem() { Text = "Wiki", Href = "/Wiki", Icon = "oi-book", IsEnabled = false },
         new MenuItem() { Text = "Roles", Href = "/Roles", Icon = "oi-lock-unlocked", IsEnabled = true },
-        new MenuItem() { Text = "Grid Examples", Href = "/Grid", Icon = "oi-grid-three-up", IsEnabled = false },        
+        new MenuItem() { Text = "Grid Examples", Href = "/Grid", Icon = "oi-grid-three-up", IsEnabled = true },        
         new MenuItem() { Text = "Form Examples", Href= "/Forms", Icon = "oi-spreadsheet", IsEnabled = false },
         new MenuItem() { Text = "State Management", Href = "/State", Icon = "oi-hard-drive", IsEnabled = false }
     };
