@@ -1,0 +1,35 @@
+﻿@page "/NoPermission" 
+@inject NavigationManager NavigationManager
+
+<h3>No Permission</h3>
+
+@if (RequiredRoles != null)
+{
+    <p>You must have one of these roles:</p>
+    <ul>
+        @foreach (var role in RequiredRoles)
+        {
+            <li>@role</li>
+        }
+    </ul>
+}
+
+@code {    
+    [QueryStringParameter]
+    public string Roles { get; set; }
+
+    public IEnumerable<string> RequiredRoles { get; set; }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        this.SetParametersFromQueryString(NavigationManager);
+        await base.SetParametersAsync(parameters);
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        RequiredRoles = Roles?.Split(",").Select(item => item.Trim());
+    }
+}

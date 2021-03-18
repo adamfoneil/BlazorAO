@@ -3,9 +3,11 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>aspnet-BlazorAO.App-E5DE0CAC-6FDE-45E6-A371-10217E62313A</UserSecretsId>
+    <RootNamespace>BlazorAO.App</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AO.CopyObject" Version="1.0.1" />
     <PackageReference Include="AO.Models" Version="1.1.30" />
     <PackageReference Include="AO.ModelSync.Library" Version="2.2.7" />
     <PackageReference Include="Dapper.CX.SqlServer.AspNetCore" Version="1.3.39" />

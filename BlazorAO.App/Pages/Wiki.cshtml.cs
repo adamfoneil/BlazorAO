@@ -1,4 +1,4 @@
-using BlazorAO.Services;
+using BlazorAO.App.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 

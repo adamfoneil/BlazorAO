@@ -1,8 +1,9 @@
 using BlazorAO.App.Areas.Identity;
 using BlazorAO.App.Data;
 using BlazorAO.App.Extensions;
+using BlazorAO.App.Models;
+using BlazorAO.App.Services;
 using BlazorAO.Models;
-using BlazorAO.Services;
 using Dapper.CX.SqlServer.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -58,8 +59,8 @@ namespace BlazorAO.App
 
             services.AddSingleton((sp) => new StateDictionary(connectionString));
 
-            services.Configure<WikiOptions>(Configuration.GetSection(WikiOptions.Section));
-            services.AddSingleton<WikiReader>();
+            services.Configure<RoleCheckerOptions>(Configuration.GetSection(nameof(RoleChecker)));
+            services.AddScoped<RoleChecker>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

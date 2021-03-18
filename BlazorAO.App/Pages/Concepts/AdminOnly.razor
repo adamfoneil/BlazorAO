@@ -1,0 +1,13 @@
+﻿@page "/Concepts/AdminOnly"
+@inject RoleChecker RoleChecker 
+
+<h3>Admin Only</h3>
+<p>Only Admins can see this page.</p>
+
+@code { 
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        RoleChecker.RequireAny("Admin");
+    }
+}

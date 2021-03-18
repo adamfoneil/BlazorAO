@@ -1,4 +1,4 @@
-﻿@page "/Roles"
+﻿@page "/Concepts/Roles"
 @inject DapperCX<int, UserProfile> Data
 @inherits AuthComponent
 
@@ -53,6 +53,13 @@
 <AuthorizeView Roles="Admin">
     <p>This is visible to <strong>Admin</strong> role, based on <code>AuthorizeView</code></p>
 </AuthorizeView>
+
+<h3>Preventing Navigation based on Role with <code>RoleChecker</code></h3>
+
+<p>If you need to block navigation to a page based on role, my suggestion is the <a href="">RoleChecker</a> service.</p>
+
+
+<ButtonLink Href="https://github.com/adamfoneil/BlazorAO/blob/master/BlazorAO.App/Pages/Roles.razor" Text="Source"/>
 
 @code { 
     IEnumerable<Role> roles;

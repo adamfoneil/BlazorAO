@@ -1,4 +1,8 @@
-﻿.nav-item ::deep a {
+﻿.nav-item {
+    padding-bottom: 0.5rem;
+}
+
+.nav-item ::deep a {
     color: #07445f;
     border-radius: 4px;
     height: 3rem;

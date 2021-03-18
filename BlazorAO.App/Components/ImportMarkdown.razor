@@ -1,0 +1,24 @@
+﻿@inject HttpClient HttpClient 
+
+<div>
+    @content
+</div>
+
+@code {
+    [Parameter]
+    public string Url { get; set; }
+
+    MarkupString content;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        var response = await HttpClient.GetAsync(Url);
+        response.EnsureSuccessStatusCode();
+
+        var markdown = await response.Content.ReadAsStringAsync();
+        var html = Markdig.Markdown.ToHtml(markdown);
+        content = new MarkupString(html);
+    }
+}

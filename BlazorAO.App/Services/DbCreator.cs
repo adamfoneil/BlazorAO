@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace BlazorAO.Services
+namespace BlazorAO.App.Services
 {
     public class DbCreator
     {

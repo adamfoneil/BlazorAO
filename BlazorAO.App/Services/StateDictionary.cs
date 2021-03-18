@@ -2,7 +2,7 @@
 using Microsoft.Data.SqlClient;
 using System.Text.Json;
 
-namespace BlazorAO.Services
+namespace BlazorAO.App.Services
 {
     public class StateDictionary : DbDictionary<string>
     {
