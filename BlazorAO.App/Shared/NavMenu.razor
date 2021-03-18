@@ -7,41 +7,29 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
-       <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/Wiki" Match="NavLinkMatch.All">
-                <span class="oi oi-book"></span> Wiki
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/Roles">
-                <span class="oi oi-lock-unlocked"></span> Roles
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/GridCrud">
-                <span class="oi oi-grid-three-up"></span> Radzen Grid Crud
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/GridQuery">
-                <span class="oi oi-magnifying-glass"></span> Radzen Grid Query
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/EditForms">
-                <span class="oi oi-spreadsheet"></span> Data Entry Forms
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/State">
-                <span class="oi oi-hard-drive"></span> State Management
-            </NavLink>
-        </li>
+        @foreach (var item in GetMenuItems().Where(mnu => mnu.IsEnabled))
+        {
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="@item.Href" Match="NavLinkMatch.All">
+                    <span class="oi @item.Icon" aria-hidden="true"></span> @item.Text
+                </NavLink>
+            </li>
+        }
+
+        @{ var disabled = GetMenuItems().Where(mnu => !mnu.IsEnabled); }
+
+        @if (disabled.Any())
+        {
+            <li class="nav-item px-3">
+                Items not available:
+            </li>
+            foreach (var item in disabled)
+            {
+                <li class="nav-item px-3">
+                    <span class="oi @item.Icon" aria-hidden="true"></span> @item.Text
+                </li>
+            }
+        }
     </ul>
 </div>
 
@@ -53,5 +41,23 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    IEnumerable<MenuItem> GetMenuItems() => new MenuItem[]
+    {
+        new MenuItem() { Text = "Home", Href = "/Index", Icon = "oi-home", IsEnabled = true },
+        new MenuItem() { Text = "Wiki", Href = "/Wiki", Icon = "oi-book", IsEnabled = false },
+        new MenuItem() { Text = "Roles", Href = "/Roles", Icon = "oi-lock-unlocked", IsEnabled = true },
+        new MenuItem() { Text = "Grid Examples", Href = "/Grid", Icon = "oi-grid-three-up", IsEnabled = false },        
+        new MenuItem() { Text = "Form Examples", Href= "/Forms", Icon = "oi-spreadsheet", IsEnabled = false },
+        new MenuItem() { Text = "State Management", Href = "/State", Icon = "oi-hard-drive", IsEnabled = false }
+    };
+
+    class MenuItem
+    {
+        public string Text { get; set; }
+        public string Icon { get; set; }
+        public string Href { get; set; }
+        public bool IsEnabled { get; set; }
     }
 }
