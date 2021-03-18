@@ -1,0 +1,13 @@
+﻿<ul class="nav flex-column">
+    <CascadingValue Value="RootPath">
+        @ChildContent
+    </CascadingValue>    
+</ul>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string RootPath { get; set; }
+}

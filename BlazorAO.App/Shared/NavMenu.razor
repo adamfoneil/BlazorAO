@@ -10,7 +10,7 @@
         @foreach (var item in GetMenuItems().Where(mnu => mnu.IsEnabled))
         {
             <li class="nav-item px-3">
-                <NavLink class="nav-link" href="@item.Href" Match="NavLinkMatch.All">
+                <NavLink class="nav-link" href="@item.Href" Match="@item.Match">
                     <span class="oi @item.Icon" aria-hidden="true"></span> @item.Text
                 </NavLink>
             </li>
@@ -45,10 +45,11 @@
 
     IEnumerable<MenuItem> GetMenuItems() => new MenuItem[]
     {
-        new MenuItem() { Text = "Home", Href = "/", Icon = "oi-home", IsEnabled = true },
+        new MenuItem() { Text = "Home", Href = "/", Icon = "oi-home", IsEnabled = true, Match = NavLinkMatch.All },
+        new MenuItem() { Text = "Data Access", Href = "/Data", Icon = "oi-box", IsEnabled = true },
         new MenuItem() { Text = "Wiki", Href = "/Wiki", Icon = "oi-book", IsEnabled = false },
         new MenuItem() { Text = "Roles", Href = "/Roles", Icon = "oi-lock-unlocked", IsEnabled = true },
-        new MenuItem() { Text = "Grid Examples", Href = "/Grid", Icon = "oi-grid-three-up", IsEnabled = true },        
+        new MenuItem() { Text = "Grid Examples", Href = "/Grid", Icon = "oi-grid-three-up", IsEnabled = true },
         new MenuItem() { Text = "Form Examples", Href= "/Forms", Icon = "oi-spreadsheet", IsEnabled = false },
         new MenuItem() { Text = "State Management", Href = "/State", Icon = "oi-hard-drive", IsEnabled = false }
     };
@@ -59,5 +60,6 @@
         public string Icon { get; set; }
         public string Href { get; set; }
         public bool IsEnabled { get; set; }
+        public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
     }
 }

@@ -1,0 +1,18 @@
+﻿@inherits LayoutComponentBase
+@layout BlazorAO.App.Shared.MainLayout
+
+<div class="row">
+    <div class="col-2 border-right mt-5">
+        <TopicList RootPath="/Data">
+            <TopicLink Text="Startup" Href="/Startup"/>
+            <TopicLink Text="Model Classes" Href="/ModelClasses"/>
+            <TopicLink Text="Stored Procedures"  Href="/Procedures"/>
+            <TopicLink Text="Change Tracking" Href="/ChangeTracking"/>
+            <TopicLink Text="Permissions" Href="/Permissions"/>
+            <TopicLink Text="Multi-Tenant Access" Href="/MultiTenancy"/>
+        </TopicList>
+    </div>
+    <div class="col-10">
+        @Body
+    </div>
+</div>
