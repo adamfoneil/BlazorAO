@@ -47,7 +47,7 @@ namespace BlazorAO.Services
             return commands.Any();
         }
 
-        public async Task<(bool success, string message)> UpdataDatabaseAsync()
+        public async Task<(bool success, string message)> UpdateDatabaseAsync()
         {
             try
             {                
@@ -82,7 +82,9 @@ namespace BlazorAO.Services
         }
 
         /// <summary>
-        /// don't drop AspNet* built-in tables and anything else manually excluded by ModelSync
+        /// Don't drop AspNet* built-in tables and anything else manually excluded by ModelSync.
+        /// Note, I tried using a symlink from the solution root file ModelSync.exclude.json to wwwroot/data, but Git didn't preserve it,
+        /// so I had to simply copy the exclude file to wwwroot/data
         /// </summary>        
         private IEnumerable<ExcludeAction> GetModelSyncExclusions()
         {

@@ -98,7 +98,7 @@ else if (updateSuccess ?? false)
 
     async Task ApplyUpdates()
     {
-        var result = await DbCreator.UpdataDatabaseAsync();
+        var result = await DbCreator.UpdateDatabaseAsync();
         if (result.success)
         {
             anyUpdates = false;
