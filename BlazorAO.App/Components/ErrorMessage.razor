@@ -1,0 +1,25 @@
+﻿@if (!string.IsNullOrEmpty(_message))
+{
+    <div class="alert alert-danger px-2">
+        @_message
+    </div>
+}
+
+@code {
+    private string _message;
+    public string Message
+    {
+        get { return _message; }
+        set
+        {
+            _message = value;
+            StateHasChanged();
+        }
+    }
+
+    public void Clear()
+    {
+        _message = null;
+        StateHasChanged();
+    }
+}

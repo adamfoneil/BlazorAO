@@ -1,0 +1,55 @@
+﻿@page "/Grid/Search"
+@inject DapperCX<int, UserProfile> Data
+@attribute [Authorize]
+
+<h3>Search</h3>
+<p>This page demonstrates a grid that you can search, page, insert, update, and delete rows from.</p>
+
+<ErrorMessage @ref="error"/>
+
+<RadzenGrid TItem="MyItemsResult" Data="data" RowCreate="SaveRow" RowUpdate="SaveRow" @ref="grid">
+    <Columns>
+        <RadzenGridColumn TItem="Item" Title="Item Name" Property="Name">
+            <EditTemplate Context="i">
+                <RadzenTextBox @bind-Value="i.Name"/>
+            </EditTemplate>
+        </RadzenGridColumn>
+
+        <RadzenGridColumn TItem="Item" Title="Type" Property="TypeName">
+            <EditTemplate Context="i">
+                <RadzenDropDown Data="itemTypes" @bind-Value="i.TypeId" ValueProperty="Id" TextProperty="Name"/>
+            </EditTemplate>
+        </RadzenGridColumn>
+    </Columns>
+</RadzenGrid>
+
+@code {
+    IEnumerable<MyItemsResult> data;
+    RadzenGrid<MyItemsResult> grid;
+    ErrorMessage error;
+    IEnumerable<ItemType> itemTypes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        // fill dropdowns
+        itemTypes = await Data.QueryAsync<ItemType>(new { workspaceId = Data.User?.WorkspaceId ?? 0 });
+
+        // fill grid
+        await RefreshList();
+    }
+
+    async Task RefreshList()
+    {
+        data = await Data.QueryAsync(new MyItems() { WorkspaceId = Data.User?.WorkspaceId ?? 0 });
+    }
+
+    async Task SaveRow(MyItemsResult item)
+    {
+        var saveRow = item.CopyAs<Item>();
+        await Data.TrySaveAsync(saveRow,
+            onSuccess: async (id) => await RefreshList(),
+            onException: (exc) => error.Message = exc.Message);
+    }
+}

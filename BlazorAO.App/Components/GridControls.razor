@@ -1,0 +1,46 @@
+﻿@typeparam TItem
+
+<RadzenGridColumn TItem="TItem" Width="@Width">
+    <Template Context="row">
+        <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="edit" Click="@(args => Grid.EditRow(row))" class="mr-2"/>        
+
+        @{ 
+            bool allowDelete = (AllowDeleteIf != null) ?
+                AllowDeleteIf.Invoke(row) :
+                AllowDelete;
+        }
+
+        @if (allowDelete)
+        {
+            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Click="@(args => OnDeleteRow(row))"/>
+        }        
+
+        @ChildContent
+    </Template>
+    <EditTemplate Context="row">
+        <RadzenButton ButtonStyle="ButtonStyle.Primary" Icon="save" Click="@((args) => Grid.UpdateRow(row))" class="mr-2"/>
+        <RadzenButton ButtonStyle="ButtonStyle.Primary" Icon="cancel" Click="@((args) => Grid.CancelEditRow(row))"/>                    
+    </EditTemplate>
+</RadzenGridColumn>
+
+@code {
+    [Parameter]
+    public RadzenGrid<TItem> Grid { get; set; }
+
+    [Parameter]
+    public EventCallback<TItem> DeleteRow { get; set; }
+
+    [Parameter]
+    public string Width { get; set; }
+
+    [Parameter]
+    public RenderFragment<TItem> ChildContent { get; set; }
+
+    [Parameter]
+    public bool AllowDelete { get; set; } = true;
+
+    [Parameter]
+    public Func<TItem, bool> AllowDeleteIf { get; set; }
+
+    async Task OnDeleteRow(TItem row) => await DeleteRow.InvokeAsync(row);
+}
