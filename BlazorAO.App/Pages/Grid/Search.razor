@@ -68,6 +68,10 @@
     </Columns>
 </RadzenGrid>
 
+<div class="mt-2">
+    <Pager Value="query.Page" ValueChanged="@(async (page) => { query.Page = page; await RefreshList(); })"/>
+</div>
+
 <GitHubLink/>
 
 @code {
@@ -75,7 +79,7 @@
     RadzenGrid<MyItemsResult> grid;
     ErrorMessage error;
     IEnumerable<ItemType> itemTypes;
-    MyItems query = new MyItems();
+    MyItems query = new MyItems() { Page = 0 };
 
     protected override async Task OnInitializedAsync()
     {

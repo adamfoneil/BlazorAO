@@ -28,6 +28,7 @@ namespace BlazorAO.App.Extensions
                     UserId = data.User.UserId                    
                 });
 
+                // set the current workspace on the user profile row
                 data.User.WorkspaceId = wsId;
                 await data.UpdateUserAsync(field => field.WorkspaceId);
             }
