@@ -6,7 +6,7 @@
     <hr/>
     <a href="@href" class="btn btn-secondary" target="_blank">GitHub Source</a>
 
-    @if (!isValid)
+    @if (!isValid ?? false)
     {
         <span>404 error on <code>@href</code>, please set <code>Filename</code> property</span>
     }
@@ -15,7 +15,7 @@
 
 @code {
     string href;
-    bool isValid;
+    bool? isValid;
 
     [Parameter]
     public string Filename { get; set; }
