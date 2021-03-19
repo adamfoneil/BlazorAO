@@ -54,12 +54,13 @@
     <p>This is visible to <strong>Admin</strong> role, based on <code>AuthorizeView</code></p>
 </AuthorizeView>
 
+<hr/>
 <h3>Preventing Navigation based on Role with <code>RoleChecker</code></h3>
 
 <p>If you need to block navigation to a page based on role, my suggestion is the <a href="">RoleChecker</a> service.</p>
 
 
-<ButtonLink Href="https://github.com/adamfoneil/BlazorAO/blob/master/BlazorAO.App/Pages/Roles.razor" Text="Source"/>
+<GitHubLink/>
 
 @code { 
     IEnumerable<Role> roles;
@@ -84,7 +85,7 @@
         {
             if (!await Data.ExistsWhereAsync<Role>(new { name = role.Name }))
             {
-                // because AspNet built-in tables use guids, I need some crazy workarounds to handle the crud SQL
+                // because AspNet built-in tables use guids, I need some workarounds to handle the crud SQL
                 var insertSql = AO.Models.Static.SqlBuilder.Insert<Role>();
                 await cn.ExecuteAsync(insertSql, role);
             }

@@ -11,7 +11,7 @@
             <TopicLink Text="Change Tracking" Href="/ChangeTracking"/>
             <TopicLink Text="Permissions" Href="/Permissions"/>
             <TopicLink Text="Multi-Tenant Access" Href="/MultiTenancy"/>
-            @if (Data.User.HasRole("Admin"))
+            @if (Data.User?.HasRole("Admin") ?? false)
             {
                 <TopicLink Text="Admin Only" Href="/AdminOnly"/>
             }

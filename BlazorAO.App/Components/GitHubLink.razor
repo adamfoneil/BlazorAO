@@ -1,0 +1,41 @@
+﻿@inject IOptions<GitHubLinkOptions> Options
+@inject NavigationManager NavManager
+@inject HttpClient HttpClient 
+
+<div>
+    <hr/>
+    <a href="@href" class="btn btn-secondary" target="_blank">GitHub Source</a>
+
+    @if (!isValid)
+    {
+        <span>404 error on <code>@href</code>, please set <code>Filename</code> property</span>
+    }
+</div>
+
+
+@code {
+    string href;
+    bool isValid;
+
+    [Parameter]
+    public string Filename { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        var pageName = string.IsNullOrEmpty(Filename) ?
+            (new Uri(NavManager.Uri).LocalPath) + ".razor" :
+            Filename;
+
+        href = Options.Value.PagesBaseUrl + pageName;
+
+        isValid = await VerifyUrl(href);
+    }
+
+    private async Task<bool> VerifyUrl(string url)
+    {
+        var response = await HttpClient.GetAsync(url);
+        return response.IsSuccessStatusCode;
+    }
+}

@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ModelSync.Models;
 using System;
+using System.Net.Http;
 using System.Reflection;
 
 namespace BlazorAO.App
@@ -58,9 +59,12 @@ namespace BlazorAO.App
                 sp.GetRequiredService<IWebHostEnvironment>()));
 
             services.AddSingleton((sp) => new StateDictionary(connectionString));
+            services.AddSingleton<HttpClient>();
 
             services.Configure<RoleCheckerOptions>(Configuration.GetSection(nameof(RoleChecker)));
             services.AddScoped<RoleChecker>();
+
+            services.Configure<GitHubLinkOptions>(Configuration.GetSection("GitHubLink"));            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
