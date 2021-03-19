@@ -80,6 +80,7 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        await Data.InitDefaultTenantAsync();
 
         // fill dropdowns
         itemTypes = await Data.QueryAsync<ItemType>(new { workspaceId = Data.User?.WorkspaceId ?? 0 });
@@ -107,14 +108,11 @@
             onException: (exc) => error.Message = exc.Message);
     }
 
-    async Task DeleteRow(MyItemsResult item)
-    {
-        var deleteRow = item.CopyAs<Item>();
-        await Data.TryDeleteAsync(deleteRow,
+    async Task DeleteRow(MyItemsResult item) =>
+        await Data.TryDeleteAsync<Item>(item.Id,
             onSuccess: async () => await RefreshList(),
             onException: (exc) => error.Message = exc.Message);
-    }
-    
+        
     void InsertRow()
     {
         grid.InsertRow(new MyItemsResult()
