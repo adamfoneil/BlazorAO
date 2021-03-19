@@ -62,14 +62,10 @@
         data = await Data.QueryAsync<ItemType>(new { workspaceId = Data.User?.WorkspaceId ?? 0 });
     }
 
-    async Task SaveRow(ItemType itemType)
-    {
-        itemType.WorkspaceId = Data.User.WorkspaceId ?? 0;
-
+    async Task SaveRow(ItemType itemType) =>
         await Data.TrySaveAsync(itemType,
             onSuccess: async (id) => await RefreshList(),
-            onException: (exc) => error.Message = exc.Message);
-    }
+            onException: (exc) => error.Message = exc.Message);        
 
     async Task DeleteRow(ItemType itemType) =>
         await Data.TryDeleteAsync<ItemType>(itemType.Id,
