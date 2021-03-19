@@ -41,7 +41,7 @@
 <AuthorizeView>    
     <strong>Important</strong> After updating roles, there are two different ways the changes take effect:
     <ul>
-        <li><code>Data.User.HasRole</code> takes effect after refreshing the page.</li>
+        <li><code>Data.User.HasRole</code> takes effect after refreshing the page. <a href="https://github.com/adamfoneil/BlazorAO/blob/master/BlazorAO.Models/UserProfile.cs#L16">Source</a></li>
         <li><code>User.IsInRole</code> takes effect after the user logs out and back in.</li>
     </ul>    
 </AuthorizeView>
