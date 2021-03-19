@@ -50,6 +50,12 @@ namespace BlazorAO.App.Queries
         [Where("[i].[IsActive]=@isActive")]
         public bool? IsActive { get; set; } = true;
 
+        [Where("[i].[Name] LIKE CONCAT('%', @nameContains, '%')")]
+        public string NameContains { get; set; }
+
+        [Where("[i].[TypeId]=@typeId")]
+        public int? TypeId { get; set; }
+
         [OrderBy(MyItemsSortOptions.Name, "[i].[Name] ASC")]
         [OrderBy(MyItemsSortOptions.QuantityOnHand, "[i].[QuantityOnHand] DESC")]
         public MyItemsSortOptions OrderBy { get; set; } = MyItemsSortOptions.Name;
@@ -63,6 +69,9 @@ namespace BlazorAO.App.Queries
             yield return new MyItems() { WorkspaceId = 1, IsActive = false };
             yield return new MyItems() { WorkspaceId = 1, IsActive = true };
             yield return new MyItems() { WorkspaceId = 1, OrderBy = MyItemsSortOptions.QuantityOnHand };
+            yield return new MyItems() { WorkspaceId = 1, NameContains = "hello" };
+            yield return new MyItems() { WorkspaceId = 1, TypeId = 1 };
+            yield return new MyItems() { WorkspaceId = 1, Page = 1 };
         }
     }
 }

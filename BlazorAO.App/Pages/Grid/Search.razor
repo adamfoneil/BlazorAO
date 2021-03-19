@@ -7,27 +7,67 @@
 
 <ErrorMessage @ref="error"/>
 
+<div class="mb-2 d-flex align-items-center justify-content-between">
+    <RadzenButton Icon="add_circle_outline" Text="Add" Click="InsertRow" />
+
+    <div class="d-flex align-items-center">
+        <RadzenTextBox @bind-Value="query.NameContains" Placeholder="search name"/>
+        <ActiveFilter @ref="activeFilter"/>
+        <RadzenButton Click="RefreshList" Text="Refresh" Icon="refresh"/>
+    </div>
+</div>
+
 <RadzenGrid TItem="MyItemsResult" Data="data" RowCreate="SaveRow" RowUpdate="SaveRow" @ref="grid">
     <Columns>
-        <RadzenGridColumn TItem="Item" Title="Item Name" Property="Name">
+        <RadzenGridColumn TItem="MyItemsResult" Title="Item Name" Property="Name">
             <EditTemplate Context="i">
                 <RadzenTextBox @bind-Value="i.Name"/>
             </EditTemplate>
         </RadzenGridColumn>
 
-        <RadzenGridColumn TItem="Item" Title="Type" Property="TypeName">
+        <RadzenGridColumn TItem="MyItemsResult" Title="Type" Property="ItemType">
             <EditTemplate Context="i">
                 <RadzenDropDown Data="itemTypes" @bind-Value="i.TypeId" ValueProperty="Id" TextProperty="Name"/>
             </EditTemplate>
         </RadzenGridColumn>
+
+        <RadzenGridColumn TItem="MyItemsResult" Title="Qty on Hand" Property="QuantityOnHand" Width="110px">
+            <EditTemplate Context="i">
+                <RadzenNumeric @bind-Value="i.QuantityOnHand"/>
+            </EditTemplate>
+        </RadzenGridColumn>
+
+        <RadzenGridColumn TItem="MyItemsResult" Title="Cost" Property="Cost">
+            <Template Context="i">
+                <span>@i.Cost?.ToString("c2")</span>
+            </Template>
+            <EditTemplate Context="i">
+                <RadzenNumeric @bind-Value="i.Cost"/>
+            </EditTemplate>
+        </RadzenGridColumn>
+
+        <RadzenGridColumn TItem="MyItemsResult" Title="Price" Property="SalePrice">
+            <Template Context="i">
+                <span>@i.SalePrice?.ToString("c2")</span>
+            </Template>
+            <EditTemplate Context="i">
+                <RadzenNumeric @bind-Value="i.SalePrice"/>
+            </EditTemplate>
+        </RadzenGridColumn>
+
+        <GridControls Grid="grid" DeleteRow="DeleteRow" TItem="MyItemsResult" Width="110px"/>
     </Columns>
 </RadzenGrid>
+
+<GitHubLink/>
 
 @code {
     IEnumerable<MyItemsResult> data;
     RadzenGrid<MyItemsResult> grid;
     ErrorMessage error;
     IEnumerable<ItemType> itemTypes;
+    ActiveFilter activeFilter;
+    MyItems query = new MyItems();
 
     protected override async Task OnInitializedAsync()
     {
@@ -42,14 +82,37 @@
 
     async Task RefreshList()
     {
-        data = await Data.QueryAsync(new MyItems() { WorkspaceId = Data.User?.WorkspaceId ?? 0 });
+        // filter the list for the current tenant
+        query.WorkspaceId = Data.User?.WorkspaceId ?? 0;
+
+        // assume active items if for some reason it's not specified
+        query.IsActive = activeFilter?.Value ?? true;
+
+        data = await Data.QueryAsync(query);
     }
 
     async Task SaveRow(MyItemsResult item)
     {
+        // the grid row needs to be copied to our base model type
         var saveRow = item.CopyAs<Item>();
+
         await Data.TrySaveAsync(saveRow,
             onSuccess: async (id) => await RefreshList(),
             onException: (exc) => error.Message = exc.Message);
     }
+
+    async Task DeleteRow(MyItemsResult item) =>
+        await Data.TryDeleteAsync(item.Id,
+            onSuccess: async () => await RefreshList(),
+            onException: (exc) => error.Message = exc.Message);
+
+    void InsertRow()
+    {
+        grid.InsertRow(new MyItemsResult()
+        {
+            IsActive = true,
+            WorkspaceId = Data.User?.WorkspaceId ?? 0
+        });
+    }
+
 }
