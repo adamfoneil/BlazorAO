@@ -15,7 +15,7 @@
     <Columns>
         <RadzenGridColumn TItem="ItemType" Title="Item Type Name" Property="Name">
             <EditTemplate Context="i">
-                <RadzenTextBox @bind-Value="i.Name"/>
+                <RadzenTextBox @bind-Value="i.Name" MaxLength="50"/>
             </EditTemplate>
         </RadzenGridColumn>
 
