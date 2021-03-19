@@ -12,7 +12,7 @@
 
     <div class="d-flex align-items-center">
         <RadzenTextBox @bind-Value="query.NameContains" Placeholder="search name"/>
-        <ActiveFilter @ref="activeFilter"/>
+        <ActiveFilter @bind-Value="query.IsActive"/>
         <RadzenButton Click="RefreshList" Text="Refresh" Icon="refresh"/>
     </div>
 </div>
@@ -55,6 +55,15 @@
             </EditTemplate>
         </RadzenGridColumn>
 
+         <RadzenGridColumn TItem="MyItemsResult" Title="Active" Width="100px">
+            <Template Context="it">
+                <RadzenSwitch @bind-Value="it.IsActive" Disabled="true"/>
+            </Template>
+            <EditTemplate Context="it">
+                <RadzenSwitch @bind-Value="it.IsActive"/>
+            </EditTemplate>
+        </RadzenGridColumn>
+
         <GridControls Grid="grid" DeleteRow="DeleteRow" TItem="MyItemsResult" Width="110px"/>
     </Columns>
 </RadzenGrid>
@@ -84,9 +93,6 @@
     {
         // filter the list for the current tenant
         query.WorkspaceId = Data.User?.WorkspaceId ?? 0;
-
-        // assume active items if for some reason it's not specified
-        query.IsActive = activeFilter?.Value ?? true;
 
         data = await Data.QueryAsync(query);
     }
