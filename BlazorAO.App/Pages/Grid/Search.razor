@@ -74,7 +74,7 @@
     IEnumerable<MyItemsResult> data;
     RadzenGrid<MyItemsResult> grid;
     ErrorMessage error;
-    IEnumerable<ItemType> itemTypes;    
+    IEnumerable<ItemType> itemTypes;
     MyItems query = new MyItems();
 
     protected override async Task OnInitializedAsync()
@@ -107,11 +107,14 @@
             onException: (exc) => error.Message = exc.Message);
     }
 
-    async Task DeleteRow(MyItemsResult item) =>
-        await Data.TryDeleteAsync(item.Id,
+    async Task DeleteRow(MyItemsResult item)
+    {
+        var deleteRow = item.CopyAs<Item>();
+        await Data.TryDeleteAsync(deleteRow,
             onSuccess: async () => await RefreshList(),
             onException: (exc) => error.Message = exc.Message);
-
+    }
+    
     void InsertRow()
     {
         grid.InsertRow(new MyItemsResult()
