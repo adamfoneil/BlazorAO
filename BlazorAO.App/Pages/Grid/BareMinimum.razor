@@ -7,7 +7,9 @@
 
 <ErrorMessage @ref="error"/>
 
-<RadzenButton Icon="add_circle_outline" Text="Add" Click="InsertRow" />
+<div class="mb-2">
+    <RadzenButton Icon="add_circle_outline" Text="Add" Click="InsertRow" />
+</div>
 
 <RadzenGrid TItem="ItemType" Data="data" RowCreate="SaveRow" RowUpdate="SaveRow" @ref="grid">
     <Columns>
@@ -17,7 +19,7 @@
             </EditTemplate>
         </RadzenGridColumn>
 
-        <RadzenGridColumn TItem="ItemType" Title="Active">
+        <RadzenGridColumn TItem="ItemType" Title="Active" Width="100px">
             <Template Context="it">
                 <RadzenSwitch @bind-Value="it.IsActive" Disabled="true"/>
             </Template>
@@ -38,7 +40,7 @@
             </Template>
         </RadzenGridColumn>
 
-        <GridControls TItem="ItemType" Grid="grid" DeleteRow="DeleteRow"/>
+        <GridControls TItem="ItemType" Grid="grid" DeleteRow="DeleteRow" Width="110px"/>
     </Columns>
 </RadzenGrid>
 
@@ -51,6 +53,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await Data.InitDefaultTenantAsync();
         await RefreshList();
     }
 
