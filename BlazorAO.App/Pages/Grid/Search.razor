@@ -93,6 +93,7 @@
         // filter the list for the current tenant
         query.WorkspaceId = Data.User?.WorkspaceId ?? 0;
 
+        // the other criteria are already bound to the query, so we can execute as-is
         data = await Data.QueryAsync(query);
     }
 
