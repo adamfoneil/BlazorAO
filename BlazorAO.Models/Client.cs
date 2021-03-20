@@ -1,10 +1,17 @@
-﻿using BlazorAO.Models.Conventions;
+﻿using AO.Models;
+using AO.Models.Attributes;
+using BlazorAO.Models.Conventions;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlazorAO.Models
 {
+    [TrackChanges]
     public class Client : BaseTable
     {
+        [Key]
+        [References(typeof(Workspace))]
+        public int WorkspaceId { get; set; }
+
         [Key]
         [MaxLength(50)]
         public string Name { get; set; }
@@ -13,7 +20,7 @@ namespace BlazorAO.Models
         /// if true, then we can invoice this client for work done
         /// if false, then it's considered overhead or an internal client
         /// </summary>
-        public bool IsInvoiceable { get; set; }
+        public bool AllowInvoicing { get; set; }
 
         public bool IsActive { get; set; } = true;
     }

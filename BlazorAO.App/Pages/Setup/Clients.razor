@@ -1,0 +1,58 @@
+﻿@page "/Samples/Clients"
+@inject DapperCX<int, UserProfile> Data
+@attribute [Authorize]
+
+<h3>Clients</h3>
+
+<ErrorMessage @ref="error"/>
+
+<div class="mb-2">
+    <RadzenButton Icon="add_circle_outline" Text="Add" Click="InsertRow" />
+</div>
+
+<RadzenGrid TItem="Client" Data="data" RowCreate="SaveRow" RowUpdate="SaveRow">
+	<Columns>
+		<RadzenGridColumn TItem="Client" Title="ClientName" Property="Name">
+			<EditTemplate Context="c">
+				<RadzenTextBox @bind-Value="c.Name"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+
+		<RadzenGridColumn TItem="Client" Title="Allow Invoicing" Property="IsInvoiceable">
+			<EditTemplate Context="c">
+				<RadzenSwitch @bind-Value="c.AllowInvoicing"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+
+        <GridControls Grid="grid" DeleteRow="DeleteRow" TItem="Client"/>
+	</Columns>
+</RadzenGrid>
+
+@code {
+    IEnumerable<Client> data;
+    RadzenGrid<Client> grid;
+    ErrorMessage error;
+
+    async Task RefreshList()
+    {
+        data = await Data.QueryAsync<Client>(new { workspaceId = Data.User?.WorkspaceId ?? 0 });
+    }
+
+    async Task SaveRow(Client client) =>
+        await Data.TrySaveAsync(client,
+            onSuccess: async (id) => await RefreshList(),
+            onException: (exc) => error.Message = exc.Message);        
+
+    async Task DeleteRow(Client client) =>
+        await Data.TryDeleteAsync<Client>(client.Id,
+            onSuccess: async() => await RefreshList(),
+            onException: (exc) => error.Message = exc.Message);
+
+    void InsertRow()
+    {
+        grid.InsertRow(new Client()
+        {
+            IsActive = true            
+        });
+    }
+}

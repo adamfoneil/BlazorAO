@@ -14,8 +14,8 @@ namespace BlazorAO.Models
         public int WorkRecordId { get; set; }
 
         /// <summary>
-        /// WorkRecord.IsInvoiceable, but manager may override
+        /// WorkRecord.AllowInvoicing, but manager may override
         /// </summary>
-        public bool IsInvoiceable { get; set; }
+        public bool AllowInvoicing { get; set; }
     }
 }

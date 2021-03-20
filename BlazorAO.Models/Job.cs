@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlazorAO.Models
 {
-    public class Project : BaseTable
+    public class Job : BaseTable
     {
         [Key]
         [References(typeof(Client))]

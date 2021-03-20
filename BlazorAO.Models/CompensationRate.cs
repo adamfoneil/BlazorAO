@@ -6,18 +6,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlazorAO.Models
 {
+    /// <summary>
+    /// an employee's compensation rate for a certain work type
+    /// </summary>
     [TrackChanges]
-    public class InvoiceRate : BaseTable
+    public class CompensationRate : BaseTable
     {
         [Key]
-        [References(typeof(WorkType))]        
-        public int WorkTypeId { get; set; }
+        [References(typeof(WorkspaceUser))]
+        public int WorkspaceUserId { get; set; }
 
         /// <summary>
-        /// use 0 for all employees or a specific WorkspaceUser.Id
+        /// use 0 for all work types or a specific one
         /// </summary>
-        [Key]
-        public int WorkspaceUserId { get; set; }
+        [Key]        
+        public int WorkTypeId { get; set; }
 
         [Column(TypeName = "money")]
         public decimal Amount { get; set; }

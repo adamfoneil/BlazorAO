@@ -1,24 +1,25 @@
 ﻿using AO.Models;
 using BlazorAO.Models.Conventions;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlazorAO.Models
 {
     /// <summary>
-    /// amount approved by a client for invoicing during a month
+    /// Any non-work, non-employee expense associated with a project (vendor payments, typically, but also other kinds of adjustments)
     /// </summary>
-    public class Budget : BaseTable
+    public class Expense : BaseTable
     {
-        [Key]
         [References(typeof(Job))]
         public int JobId { get; set; }
 
-        [Key]
-        public int Year { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime Date { get; set; }
 
-        [Key]
-        public int Month { get; set; }
+        [MaxLength(255)]
+        [Required]
+        public string Description { get; set; }
 
         [Column(TypeName = "money")]
         public decimal Amount { get; set; }
