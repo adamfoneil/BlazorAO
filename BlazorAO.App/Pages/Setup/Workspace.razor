@@ -1,0 +1,55 @@
+﻿@page "/Setup/Workspace"
+@inject DapperCX<int, UserProfile> Data
+@attribute [Authorize]
+
+<h3>Workspace</h3>
+
+<ErrorMessage @ref="error"/>
+
+@if (workspace != null)
+{
+    <EditForm Model="workspace" OnSubmit="SaveWorkspace">
+
+        <FormField Label="Workspace Name:">
+            <RadzenTextBox @bind-Value="workspace.Name"/>
+        </FormField>
+
+        <FormField Label="Next Invoice:">
+            <RadzenNumeric @bind-Value="workspace.NextInvoice"/>
+        </FormField>
+
+        <FormField Label="Pay Period Ends On:">
+            <RadzenDropDown Data="weekDays" ValueProperty="Key" TextProperty="Value" @bind-Value="workspace.PayPeriodEndDay"/>
+        </FormField>
+
+        <FormField Label="Pay Period Weeks:">
+            <RadzenNumeric @bind-Value="workspace.PayPeriodWeeks"/>
+        </FormField>
+
+        <FormField>
+            <button class="btn btn-primary" type="submit">Save</button>
+        </FormField>
+
+    </EditForm>
+}
+
+@code {
+    BlazorAO.Models.Workspace workspace;
+    ErrorMessage error;
+    Dictionary<int, string> weekDays;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        await Data.InitDefaultTenantAsync();
+
+        workspace = await Data.GetAsync<BlazorAO.Models.Workspace>(Data.User.WorkspaceId ?? 0);
+        weekDays = EnumHelper.SqlServerWeekDays();
+    }
+
+    async Task SaveWorkspace()
+    {
+        await Data.TrySaveAsync(workspace, onException: (exc) => error.Message = exc.Message);
+    }
+}

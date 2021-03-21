@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorAO.App", "BlazorAO.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorAO.Models", "BlazorAO.Models\BlazorAO.Models.csproj", "{81EDFFF9-79BC-46F1-B3C2-B420D83D4AE3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.csproj", "{C6FEED8F-B605-4D42-AA2A-99543F830600}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{81EDFFF9-79BC-46F1-B3C2-B420D83D4AE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81EDFFF9-79BC-46F1-B3C2-B420D83D4AE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81EDFFF9-79BC-46F1-B3C2-B420D83D4AE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6FEED8F-B605-4D42-AA2A-99543F830600}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6FEED8F-B605-4D42-AA2A-99543F830600}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6FEED8F-B605-4D42-AA2A-99543F830600}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6FEED8F-B605-4D42-AA2A-99543F830600}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
