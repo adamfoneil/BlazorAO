@@ -80,6 +80,16 @@
         "Type": 2,
         "ObjectType": 2,
         "ObjectName": "dbo.AspNetUsers.SecurityStamp"
+      },
+      {
+        "Type": 2,
+        "ObjectType": 1,
+        "ObjectName": "changes.ColumnHistory"
+      },
+      {
+        "Type": 2,
+        "ObjectType": 1,
+        "ObjectName": "changes.RowVersion"
       }
     ]
   }
