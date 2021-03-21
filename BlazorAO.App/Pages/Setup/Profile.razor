@@ -1,0 +1,46 @@
+﻿@page "/Setup/Profile"
+@inject DapperCX<int, UserProfile> Data
+
+<h3>Profile</h3>
+
+<EditForm Model="Data.User" OnSubmit="UpdateProfile">
+
+    <FormField Label="Time Zone:">
+        <RadzenDropDown Data="timeZones" ValueProperty="Id" TextProperty="DisplayName" @bind-Value="Data.User.TimeZoneId" Style="width:400px"/>
+        <br/>
+        <span>Local Time: @Data.User.LocalTime</span>
+    </FormField>
+
+    <FormField Label="First Name:">
+        <RadzenTextBox @bind-Value="Data.User.FirstName" Style="width:300px"/>
+    </FormField>
+
+    <FormField Label="Last Name:">
+        <RadzenTextBox @bind-Value="Data.User.LastName" Style="width:300px"/>
+    </FormField>
+
+    <FormField>
+        <button class="btn btn-primary" type="submit">Save</button>
+    </FormField>
+
+</EditForm>
+
+<GitHubLink/>
+
+@code { 
+    IEnumerable<TimeZoneInfo> timeZones;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        timeZones = TimeZoneInfo.GetSystemTimeZones();
+    }
+
+    async Task UpdateProfile()
+    {
+        await Data.UpdateUserAsync(
+            field => field.TimeZoneId,
+            field => field.FirstName,
+            field => field.LastName);
+    }
+}
