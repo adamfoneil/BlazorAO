@@ -1,5 +1,6 @@
 ﻿@page "/Setup/Profile"
 @inject DapperCX<int, UserProfile> Data
+@attribute [Authorize]
 
 <h3>Profile</h3>
 
@@ -19,6 +20,10 @@
         <RadzenTextBox @bind-Value="Data.User.LastName" Style="width:300px"/>
     </FormField>
 
+    <FormField Label="Current Workspace:">
+        <RadzenDropDown @bind-Value="Data.User.WorkspaceId" Data="myWorkspaces" ValueProperty="Id" TextProperty="Name"/>
+    </FormField>
+
     <FormField>
         <button class="btn btn-primary" type="submit">Save</button>
     </FormField>
@@ -29,11 +34,16 @@
 
 @code { 
     IEnumerable<TimeZoneInfo> timeZones;
+    IEnumerable<Workspace> myWorkspaces;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+
+        await Data.InitDefaultTenantAsync();
+
         timeZones = TimeZoneInfo.GetSystemTimeZones();
+        myWorkspaces = await Data.QueryAsync(new MyWorkspaces() { UserId = Data.User?.UserId ?? 0 });
     }
 
     async Task UpdateProfile()
