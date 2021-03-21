@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlazorAO.Models
 {
+    /// <summary>
+    /// defines roles administered by the app owner (distinct from a workspace or tenant owner)
+    /// </summary>
     [Table("AspNetRoles")]        
     public class Role
     {
