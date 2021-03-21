@@ -66,16 +66,15 @@
     BlazorAO.Models.Workspace workspace;
     ErrorMessage error;
     Dictionary<int, string> weekDays;
-    bool? azureConnectionValid;
+    bool? azureConnectionValid;    
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-
         await Data.InitDefaultTenantAsync();
 
         workspace = await Data.GetAsync<BlazorAO.Models.Workspace>(Data.User.WorkspaceId ?? 0);
-        weekDays = EnumHelper.SqlServerWeekDays();
+        weekDays = EnumHelper.SqlServerWeekDays();        
     }
 
     async Task SaveWorkspace()
