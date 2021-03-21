@@ -10,8 +10,12 @@ namespace BlazorAO.Models
     public class WorkspaceUserPermission : BaseTable
     {
         [Key]
-        [References(typeof(WorkspaceUser))]        
-        public int WorkspaceUserId { get; set; }
+        [References(typeof(Workspace))]        
+        public int WorkspaceId { get; set; }
+
+        [Key]
+        [References(typeof(UserProfile))]
+        public int UserId { get; set; }
 
         [Key]
         [References(typeof(Permission))]
