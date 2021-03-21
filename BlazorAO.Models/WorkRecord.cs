@@ -23,11 +23,14 @@ namespace BlazorAO.Models
         [References(typeof(WorkType))]
         public int WorkTypeId { get; set; }
 
+        [References(typeof(PayPeriod))]
+        public int PayPeriodId { get; set; }
+
         /// <summary>
-        /// number of hours worked or expense amount
+        /// number of hours worked
         /// </summary>
         [Column(TypeName = "decimal(5,2)")]
-        public decimal Quantity { get; set; }
+        public decimal Hours { get; set; }
 
         /// <summary>
         /// if true, then manager must approve hours so it can be invoiced

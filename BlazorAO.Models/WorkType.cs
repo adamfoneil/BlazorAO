@@ -5,18 +5,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlazorAO.Models
 {
-    public enum WorkUnit
-    {
-        /// <summary>
-        /// for hours worked
-        /// </summary>
-        Hours,
-        /// <summary>
-        /// for reimbursed expenses
-        /// </summary>
-        Dollars
-    }
-
     /// <summary>
     /// a specific type of work or service provided with a certain hourly rate
     /// </summary>
@@ -30,8 +18,6 @@ namespace BlazorAO.Models
         [Key]
         [MaxLength(50)]
         public string Name { get; set; }
-
-        public WorkUnit Units { get; set; }
 
         public bool IsActive { get; set; } = true;
     }

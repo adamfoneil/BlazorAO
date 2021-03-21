@@ -26,7 +26,7 @@ namespace BlazorAO.Models
         public static IEnumerable<Permission> SeedData => new Permission[]
         {
             new Permission() { Name = "President", GrantedByPermissionId = 1, Description = "May manage users, delete invoices" },
-            new Permission() { Name = "Project Manager", GrantedByPermissionId = 1, Description = "May create projects and set budgets" },
+            new Permission() { Name = "Project Manager", GrantedByPermissionId = 1, Description = "May create projects and set budgets, approve expenses" },
             new Permission() { Name = "Accountant", GrantedByPermissionId = 1, Description = "May create and invoice clients" },
             new Permission() { Name = "Supervisor", GrantedByPermissionId = 2, Description = "May approve employee hours" }            
         };

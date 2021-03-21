@@ -24,5 +24,14 @@ namespace BlazorAO.Models
         /// number of weeks in pay period
         /// </summary>
         public int PayPeriodWeeks { get; set; }
+
+        /// <summary>
+        /// Azure blob storage connection
+        /// </summary>
+        [MaxLength(255)]
+        public string StorageConnectionString { get; set; }
+
+        [MaxLength(50)]
+        public string StorageContainer { get; set; }
     }
 }
