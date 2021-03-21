@@ -19,6 +19,9 @@ namespace BlazorAO.Models
         [References(typeof(UserProfile))]
         public int UserId { get; set; }
 
+        [References(typeof(UserProfile))]
+        public int? ManagerId { get; set; }
+
         public bool IsActive { get; set; } = true;
     }
 }

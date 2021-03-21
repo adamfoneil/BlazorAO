@@ -4,8 +4,133 @@
 
 <h3>Users</h3>
 
+<ErrorMessage @ref="error"/>
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <div>
+        <!--invite controls-->
+    </div>
+
+    <div>
+        <ActiveFilter @bind-Value="query.IsActive"/>
+        <RadzenButton Text="Refresh" Click="RefreshList" Icon="refresh" Class="ml-2"/>
+    </div>
+</div>
+
+<RadzenGrid TItem="WorkspaceUsersResult" @ref="grid" Data="data" RowEdit="OnRowEdit" RowUpdate="SaveUser">
+	<Columns>
+		<RadzenGridColumn TItem="WorkspaceUsersResult" Title="User Name" Property="UserName">
+			<Template Context="u">
+				<span>@u.UserName</span>
+			</Template>
+		</RadzenGridColumn>
+
+		<RadzenGridColumn TItem="WorkspaceUsersResult" Title="First Name" Property="FirstName">
+			<Template Context="u">
+				<span>@u.FirstName</span>
+			</Template>
+		</RadzenGridColumn>
+
+		<RadzenGridColumn TItem="WorkspaceUsersResult" Title="Last Name" Property="LastName">
+			<Template Context="u">
+				<span>@u.LastName</span>
+			</Template>
+		</RadzenGridColumn>
+
+		<RadzenGridColumn TItem="WorkspaceUsersResult" Title="Manager" Property="ManagerId">
+			<Template Context="u">
+				<span>@u.ManagerName</span>
+			</Template>
+			<EditTemplate Context="u">
+				<RadzenDropDown @bind-Value="u.ManagerId" Data="users" ValueProperty="UserId" TextProperty="DisplayName"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+
+		<RadzenGridColumn Title="Roles" TItem="WorkspaceUsersResult">
+            <Template Context="u">
+                <ul class="list-unstyled">
+                    @foreach (var p in permissions[u.Id])
+                    {
+                        <li>@p.Name</li>
+                    }
+                </ul>
+            </Template>
+            <EditTemplate Context="emp">
+                <RadzenDropDown Multiple="true" Data="allPermissions" ValueProperty="Id" TextProperty="Name" @bind-Value="selectedPermissionIds"/>
+            </EditTemplate>
+        </RadzenGridColumn>
+
+		<RadzenGridColumn TItem="WorkspaceUsersResult" Title="Active" Property="IsActive">
+			<EditTemplate Context="u">
+				<RadzenSwitch @bind-Value="u.IsActive"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+
+		<GridControls Grid="grid" TItem="WorkspaceUsersResult"/>
+	</Columns>
+</RadzenGrid>
 
 
 @code {
+    ErrorMessage error;
+    RadzenGrid<WorkspaceUsersResult> grid;
+    WorkspaceUsers query = new WorkspaceUsers();
+    IEnumerable<WorkspaceUsersResult> data;
+    ILookup<int, WorkspaceUserPermissionsResult> permissions;
+    IEnumerable<Permission> allPermissions;
+    IEnumerable<int> selectedPermissionIds;
 
+    IEnumerable<UserSelectResult> users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await CreatePermissionsAsync();
+
+        allPermissions = await Data.QueryAsync<Permission>();
+        users = await Data.QueryAsync(new UserSelect() { WorkspaceId = Data.User?.WorkspaceId ?? 0 });
+        query.WorkspaceId = Data.User?.WorkspaceId ?? 0;
+
+        await RefreshList();
+    }
+
+    async Task RefreshList()
+    {
+        data = await Data.QueryAsync(query);
+        permissions = (await Data.QueryAsync(new WorkspaceUserPermissions() { WorkspaceId = Data.User?.WorkspaceId ?? 0 })).ToLookup(row => row.UserId);
+    }
+
+    async Task SaveUser(WorkspaceUsersResult row)
+    {
+        var saveRow = row.CopyAs<WorkspaceUser>();
+
+        await Data.TrySaveAsync(saveRow,
+           onException: (exc) => error.Message = exc.Message,
+           onSuccess: async (id) =>
+           {
+               await new RebuildUserPermissions()
+               {
+                   UserId = id,
+                   WorkspaceId = Data.User?.WorkspaceId ?? 0,
+                   PermissionIds = selectedPermissionIds.ToArray(),
+                   LocalTime = Data.User.LocalTime,
+                   UserName = Data.User.Name
+               }.ExecuteAsync(Data.GetConnection);
+
+               await RefreshList();
+           });
+    }
+
+    void OnRowEdit(WorkspaceUsersResult row) => selectedPermissionIds = permissions[row.Id].Select(p => p.PermissionId);
+
+    async Task CreatePermissionsAsync()
+    {
+        foreach (var p in Permission.SeedData)
+        {
+            if (!await Data.ExistsWhereAsync<Permission>(new { name = p.Name }))
+            {
+                await Data.SaveAsync(p);
+            }
+        }
+    }
 }

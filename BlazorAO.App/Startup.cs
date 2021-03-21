@@ -66,6 +66,7 @@ namespace BlazorAO.App
 
             services.Configure<GitHubLinkOptions>(Configuration.GetSection("GitHubLink"));
             services.AddSingleton<AzureTester>();
+            services.AddChangeTracking(connectionString, new DataModel());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
