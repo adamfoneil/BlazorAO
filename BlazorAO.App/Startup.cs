@@ -64,7 +64,8 @@ namespace BlazorAO.App
             services.Configure<RoleCheckerOptions>(Configuration.GetSection(nameof(RoleChecker)));
             services.AddScoped<RoleChecker>();
 
-            services.Configure<GitHubLinkOptions>(Configuration.GetSection("GitHubLink"));            
+            services.Configure<GitHubLinkOptions>(Configuration.GetSection("GitHubLink"));
+            services.AddSingleton<AzureTester>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,5 +1,6 @@
 ﻿@page "/Setup/Workspace"
 @inject DapperCX<int, UserProfile> Data
+@inject AzureTester AzureTester
 @attribute [Authorize]
 
 <h3>Workspace</h3>
@@ -26,6 +27,32 @@
             <RadzenNumeric @bind-Value="workspace.PayPeriodWeeks"/>
         </FormField>
 
+        <FormField Label="Azure Storage Connection:">
+            <ShowHide>
+                <RadzenTextBox @bind-Value="workspace.StorageConnectionString" Style="width:100%"/>
+            </ShowHide>            
+        </FormField>
+
+        <FormField Label="Container Name:">
+            <div class="d-flex align-items-center">
+                <RadzenTextBox @bind-Value="workspace.StorageContainer"/>
+                <button class="btn btn-secondary" @onclick="TestAzureConnection">Test Connection</button>
+                @if (azureConnectionValid.HasValue)
+                {
+                    <div class="ml-2">
+                    @if (azureConnectionValid.Value)
+                    {
+                        <span class="oi oi-circle-check" style="color:green"></span>
+                    }
+                    else
+                    {
+                        <span class="oi oi-warning" style="color:red"></span>
+                    }
+                    </div>
+                }
+            </div>            
+        </FormField>
+
         <FormField>
             <button class="btn btn-primary" type="submit">Save</button>
         </FormField>
@@ -33,10 +60,13 @@
     </EditForm>
 }
 
+<GitHubLink/>
+
 @code {
     BlazorAO.Models.Workspace workspace;
     ErrorMessage error;
     Dictionary<int, string> weekDays;
+    bool? azureConnectionValid;
 
     protected override async Task OnInitializedAsync()
     {
@@ -51,5 +81,10 @@
     async Task SaveWorkspace()
     {
         await Data.TrySaveAsync(workspace, onException: (exc) => error.Message = exc.Message);
+    }
+
+    async Task TestAzureConnection()
+    {
+        azureConnectionValid = await AzureTester.TestConnectionAsync(workspace.StorageConnectionString, workspace.StorageContainer);
     }
 }

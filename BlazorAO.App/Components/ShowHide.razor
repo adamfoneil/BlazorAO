@@ -1,0 +1,33 @@
+﻿@if (IsVisible)
+{    
+    <div class="d-flex">
+        @ChildContent
+        <button class="btn btn-secondary" @onclick="Hide">Hide</button>
+    </div>            
+}
+else
+{
+    <div>
+        <button class="btn btn-outline-secondary" @onclick="Show">Show</button>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    void Show()
+    {
+        IsVisible = true;
+        StateHasChanged();
+    }
+
+    void Hide()
+    {
+        IsVisible = false;
+        StateHasChanged();
+    }
+}
