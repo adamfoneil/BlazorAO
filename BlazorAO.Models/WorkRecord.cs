@@ -23,9 +23,6 @@ namespace BlazorAO.Models
         [References(typeof(WorkType))]
         public int WorkTypeId { get; set; }
 
-        [References(typeof(PayPeriod))]
-        public int PayPeriodId { get; set; }
-
         /// <summary>
         /// number of hours worked
         /// </summary>

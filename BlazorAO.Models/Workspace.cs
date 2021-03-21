@@ -17,16 +17,6 @@ namespace BlazorAO.Models
         public int NextInvoice { get; set; } = 1000;
 
         /// <summary>
-        /// day of the week, as reported by T-SQL DATEPART(dw when pay periods end
-        /// </summary>
-        public int PayPeriodEndDay { get; set; }
-
-        /// <summary>
-        /// number of weeks in pay period
-        /// </summary>
-        public int PayPeriodWeeks { get; set; }
-
-        /// <summary>
         /// Azure blob storage connection
         /// </summary>
         [MaxLength(255)]

@@ -19,14 +19,6 @@
             <RadzenNumeric @bind-Value="workspace.NextInvoice"/>
         </FormField>
 
-        <FormField Label="Pay Period Ends On:">
-            <RadzenDropDown Data="weekDays" ValueProperty="Key" TextProperty="Value" @bind-Value="workspace.PayPeriodEndDay"/>
-        </FormField>
-
-        <FormField Label="Pay Period Weeks:">
-            <RadzenNumeric @bind-Value="workspace.PayPeriodWeeks"/>
-        </FormField>
-
         <FormField Label="Azure Storage Connection:">
             <ShowHide>
                 <RadzenTextBox @bind-Value="workspace.StorageConnectionString" Style="width:100%"/>
