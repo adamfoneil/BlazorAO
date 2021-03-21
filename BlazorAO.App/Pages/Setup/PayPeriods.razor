@@ -3,11 +3,12 @@
 @attribute [Authorize]
 
 <h3>Pay Periods</h3>
+<p>Pay Periods are created automatically except for the first one.</p>
 
 <ErrorMessage @ref="error"/>
 
 <div class="mb-2 d-flex align-items-center">
-    <RadzenButton Icon="add_circle_outline" Text="Add" Click="InsertRow" />
+    <RadzenButton Text="Add" Icon="add_circle_outline" Click="InsertRow"/>
 </div>
 
 <RadzenGrid TItem="PayPeriodsResult" Data="data" RowCreate="SaveRow" RowUpdate="SaveRow" @ref="grid">
@@ -15,16 +16,16 @@
 
         <RadzenGridColumn TItem="PayPeriodsResult" Title="Start Date" Property="StartDate">
             <Template Context="pp">
-                <span>@pp.StartDate.ToString("ddd M/d")</span>
+                <span>@pp.StartDate.ToString("ddd M/d/yy")</span>
             </Template>
         </RadzenGridColumn>
 
 		<RadzenGridColumn TItem="PayPeriodsResult" Title="End Date" Property="EndDate">
             <Template Context="pp">
-                <span>@pp.EndDate.ToString("ddd M/d")</span>
+                <span>@pp.EndDate.ToString("ddd M/d/yy")</span>
             </Template>
 			<EditTemplate Context="pp">
-				<RadzenDatePicker @bind-Value="pp.EndDate"/>
+				<RadzenDatePicker @bind-Value="pp.EndDate" DateFormat="ddd M/d/yy"/>
 			</EditTemplate>
 		</RadzenGridColumn>
 
@@ -33,15 +34,24 @@
 	</Columns>
 </RadzenGrid>
 
+<div class="mt-2">
+    <p>As long as one Pay Period exists, there's no need to create additional Pay Periods manually. You can if you like, however.</p>
+    <RadzenButton Text="Add Next" Icon="add_circle_outline" Click="AddNextPeriod"/>
+</div>
+
+
 <GitHubLink/>
 
 @code {
     ErrorMessage error;
     IEnumerable<PayPeriodsResult> data;
     RadzenGrid<PayPeriodsResult> grid;
+    BlazorAO.Models.Workspace workspace;
 
     protected override async Task OnInitializedAsync()
     {
+        workspace = await Data.GetAsync<BlazorAO.Models.Workspace>(Data.User?.WorkspaceId ?? 0);
+
         await RefreshList();
     }
 
@@ -67,7 +77,14 @@
             onException: (exc) => error.Message = exc.Message);
 
     void InsertRow() => grid.InsertRow(new PayPeriodsResult()
-    {        
-        WorkspaceId = Data.User?.WorkspaceId ?? 0
+    {
+        WorkspaceId = Data.User?.WorkspaceId ?? 0,
+        // sql server week days are +1 .NET week days
+        EndDate = DateTime.Today.FirstAfter((DayOfWeek)workspace.PayPeriodEndDay - 1)
     });
+
+    async Task AddNextPeriod()
+    {
+
+    }
 }

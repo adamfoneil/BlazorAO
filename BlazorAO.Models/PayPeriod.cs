@@ -15,5 +15,8 @@ namespace BlazorAO.Models
         [Key]
         [Column(TypeName = "date")]        
         public DateTime EndDate { get; set; }
+
+        [NotMapped]
+        public DateTime StartDate { get; set; }
     }
 }

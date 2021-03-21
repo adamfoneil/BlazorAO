@@ -18,22 +18,22 @@ namespace BlazorAO.App.Queries
         public PayPeriods() : base(
             @"WITH [recent_periods] AS (
                 SELECT TOP (5)
-                    [pp].*, ROW_NUMBER() OVER (ORDER BY [EndDate] DESC) AS [RowNumber]
+                    [pp].*,
+                    DATEADD(dd, ([ws].[PayPeriodWeeks] * -7) + 1, [pp].[EndDate]) AS [StartDate]
                 FROM
                     [dbo].[PayPeriod] [pp]
+                    INNER JOIN [dbo].[Workspace] [ws] ON [pp].[WorkspaceId]=[ws].[Id]
                 WHERE
                     [WorkspaceId]=@workspaceId AND
-                    [EndDate] < DATEADD(d, 20, getdate())
+                    [EndDate] < DATEADD(d, 15, getdate())
                 ORDER BY
                     [EndDate] DESC
             ) SELECT
-                [current].[WorkspaceId],
-                [current].[Id], 
-                DATEADD(d, 1, [prior].[EndDate]) AS [StartDate],
-                [current].[EndDate]    
+                [Id],
+                [StartDate],
+                [EndDate]
             FROM
-                [recent_periods] [current]
-                INNER JOIN [recent_periods] [prior] ON [current].[RowNumber]-1 = [prior].[RowNumber]
+                [recent_periods]
             ORDER BY
                 [EndDate]")
         {
