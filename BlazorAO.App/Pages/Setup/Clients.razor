@@ -1,4 +1,4 @@
-﻿@page "/Samples/Clients"
+﻿@page "/Setup/Clients"
 @inject DapperCX<int, UserProfile> Data
 @attribute [Authorize]
 
@@ -6,11 +6,19 @@
 
 <ErrorMessage @ref="error"/>
 
-<div class="mb-2">
-    <RadzenButton Icon="add_circle_outline" Text="Add" Click="InsertRow" />
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <div>
+        <RadzenButton Icon="add_circle_outline" Text="Add" Click="InsertRow" />
+    </div>
+
+    <div class="d-flex align-items-center">
+        <ActiveFilter @bind-Value="query.IsActive"/>
+        <RadzenButton Text="Refresh" Click="RefreshList" Icon="refresh" Class="ml-2"/>
+    </div>
 </div>
 
-<RadzenGrid TItem="Client" Data="data" RowCreate="SaveRow" RowUpdate="SaveRow">
+
+<RadzenGrid TItem="Client" Data="data" RowCreate="SaveRow" RowUpdate="SaveRow" @ref="grid">
 	<Columns>
 		<RadzenGridColumn TItem="Client" Title="ClientName" Property="Name">
 			<EditTemplate Context="c">
@@ -19,10 +27,28 @@
 		</RadzenGridColumn>
 
 		<RadzenGridColumn TItem="Client" Title="Allow Invoicing" Property="IsInvoiceable">
+            <Template Context="c">
+                <span>@c.AllowInvoicing</span>
+            </Template>
 			<EditTemplate Context="c">
 				<RadzenSwitch @bind-Value="c.AllowInvoicing"/>
 			</EditTemplate>
 		</RadzenGridColumn>
+
+        <RadzenGridColumn TItem="Client" Title="Invoice Email" Property="InvoiceEmail">
+            <EditTemplate Context="c">
+                <RadzenTextBox @bind-Value="c.InvoiceEmail"/>
+            </EditTemplate>
+        </RadzenGridColumn>
+
+        <RadzenGridColumn TItem="Client" Title="Active" Property="IsActive">
+            <Template Context="c">
+                <span>@c.IsActive</span>
+            </Template>
+            <EditTemplate Context="c">
+                <RadzenSwitch @bind-Value="c.IsActive"/>
+            </EditTemplate>
+        </RadzenGridColumn>
 
         <GridControls Grid="grid" DeleteRow="DeleteRow" TItem="Client"/>
 	</Columns>
@@ -32,16 +58,23 @@
     IEnumerable<Client> data;
     RadzenGrid<Client> grid;
     ErrorMessage error;
+    MyClients query = new MyClients();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshList();
+    }
 
     async Task RefreshList()
     {
-        data = await Data.QueryAsync<Client>(new { workspaceId = Data.User?.WorkspaceId ?? 0 });
+        query.WorkspaceId = Data.User?.WorkspaceId ?? 0;
+        data = await Data.QueryAsync(query);
     }
 
     async Task SaveRow(Client client) =>
         await Data.TrySaveAsync(client,
             onSuccess: async (id) => await RefreshList(),
-            onException: (exc) => error.Message = exc.Message);        
+            onException: (exc) => error.Message = exc.Message);
 
     async Task DeleteRow(Client client) =>
         await Data.TryDeleteAsync<Client>(client.Id,
@@ -52,7 +85,8 @@
     {
         grid.InsertRow(new Client()
         {
-            IsActive = true            
+            WorkspaceId = Data.User?.WorkspaceId ?? 0,
+            IsActive = true
         });
     }
 }
