@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
-using ModelSync.Abstract;
 using ModelSync.Models;
 using ModelSync.Services;
 using System;
@@ -26,7 +25,7 @@ namespace BlazorAO.App.Services
         }
 
         public async Task<(bool success, string message)> DbExistsAsync()
-        {            
+        {
             try
             {
                 using (var cn = new SqlConnection(_connectionString))
@@ -50,7 +49,7 @@ namespace BlazorAO.App.Services
         public async Task<(bool success, string message)> UpdateDatabaseAsync()
         {
             try
-            {                
+            {
                 var commands = (await GetUpdatesAsync()).ToArray();
                 if (!commands.Any())
                 {
@@ -60,8 +59,8 @@ namespace BlazorAO.App.Services
                 using (var cn = new SqlConnection(_connectionString))
                 {
                     await new SqlServerDialect().ExecuteAsync(cn, commands);
-                }                    
-                
+                }
+
                 return (true, null);
             }
             catch (Exception exc)
@@ -71,7 +70,7 @@ namespace BlazorAO.App.Services
         }
 
         private async Task<IEnumerable<ScriptAction>> GetUpdatesAsync()
-        {                        
+        {
             using (var cn = new SqlConnection(_connectionString))
             {
                 var dbModel = await DataModel.FromSqlServerAsync(cn);
@@ -99,7 +98,7 @@ namespace BlazorAO.App.Services
                     var itemJson = item.GetRawText();
                     yield return JsonSerializer.Deserialize<ExcludeAction>(itemJson);
                 }
-            }               
+            }
         }
     }
 }

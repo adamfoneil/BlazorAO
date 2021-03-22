@@ -13,7 +13,7 @@ namespace BlazorAO.App.Services
                 await client.CreateIfNotExistsAsync();
                 return true;
             }
-            catch 
+            catch
             {
                 return false;
             }

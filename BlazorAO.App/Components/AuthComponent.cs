@@ -10,9 +10,9 @@ namespace BlazorAO.App.Components
     /// help from https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-5.0#expose-the-authentication-state-as-a-cascading-parameter
     /// </summary>
     public class AuthComponent : ComponentBase
-    {        
+    {
         public AuthComponent()
-        {            
+        {
         }
 
         [CascadingParameter]

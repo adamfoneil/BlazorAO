@@ -25,7 +25,7 @@ namespace BlazorAO.App.Extensions
                 await data.MergeAsync(new WorkspaceUser()
                 {
                     WorkspaceId = wsId,
-                    UserId = data.User.UserId                    
+                    UserId = data.User.UserId
                 });
 
                 // set the current workspace on the user profile row

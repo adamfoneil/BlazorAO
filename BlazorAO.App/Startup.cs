@@ -47,7 +47,7 @@ namespace BlazorAO.App
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddDatabaseDeveloperPageExceptionFilter();
-            
+
             services.AddDapperCX(
                 connectionString,
                 sp => sp.GetAspNetUserWithRoles<UserProfile>(connectionString),

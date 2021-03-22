@@ -74,7 +74,7 @@ namespace BlazorAO.App.Services
 
             var links = doc
                 .Descendants()
-                .Elements("a")    
+                .Elements("a")
                 .Select(tag =>
                 {
                     var linkInfo = IsSourceLink(tag);
@@ -89,7 +89,7 @@ namespace BlazorAO.App.Services
                 }).ToArray();
 
             foreach (var link in links)
-            {                
+            {
                 if (link.IsInternal)
                 {
                     var originalHref = link.Tag.Attribute(XName.Get("href")).Value;
@@ -99,7 +99,7 @@ namespace BlazorAO.App.Services
                     link.Tag.Add(new XAttribute("data-codeview-url", link.RawCodeUrl));
                     link.Tag.Add(new XAttribute("data-highlight", link.HighlightRange));
                     link.Tag.Add(new XAttribute("data-external-url", originalHref));
-                    link.Tag.Add(new XAttribute("class", "code-link"));                    
+                    link.Tag.Add(new XAttribute("class", "code-link"));
                 }
                 else
                 {
@@ -110,7 +110,7 @@ namespace BlazorAO.App.Services
             }
 
             List<string> bodyNodes = new List<string>();
-            bodyNodes.AddRange(doc.Root.Nodes().Select(node => node.ToString()));            
+            bodyNodes.AddRange(doc.Root.Nodes().Select(node => node.ToString()));
             return string.Join("\r\n", bodyNodes);
 
             (bool isSourceLink, string newUrl, string lineNumber) IsSourceLink(XElement tag)
@@ -131,7 +131,7 @@ namespace BlazorAO.App.Services
             {
                 var lineNumber = Regex.Match(href, @"#L.*");
                 return (lineNumber.Success) ?
-                    lineNumber.Value : 
+                    lineNumber.Value :
                     string.Empty;
             }
 
@@ -160,7 +160,7 @@ namespace BlazorAO.App.Services
             private static string ToTitle(string fileName)
             {
                 string result = Path.GetFileNameWithoutExtension(fileName);
-                return string.Join(" ", result.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries));                
+                return string.Join(" ", result.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries));
             }
         }
 

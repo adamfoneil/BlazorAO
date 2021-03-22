@@ -9,13 +9,13 @@ namespace BlazorAO.Controllers
 {
     public class GitHubController : Controller
     {
-        private static HttpClient _client = new HttpClient();        
+        private static HttpClient _client = new HttpClient();
 
         /// <summary>
         /// meant for getting a "raw" code URL from github, inserts line numbers and highlights any selected line(s) from #L hash
         /// </summary>
         public async Task<ContentResult> Source(string url, string highlight)
-        {            
+        {
             var response = await _client.GetAsync(url);
             response.EnsureSuccessStatusCode();
 
@@ -29,10 +29,10 @@ namespace BlazorAO.Controllers
                 var highlightClass = (isHighlight) ? "highlight" : string.Empty;
                 return $"<span class=\"line-number\">{index + 1}:</span><span class=\"{highlightClass}\">{line}</span>";
             });
-           
+
             return Content(string.Join("\r\n", numberedLines), "text/html");
         }
-       
+
         /// <summary>
         /// for example
         /// https://raw.githubusercontent.com/adamfoneil/BlazorStarter/master/BlazorStarter/Startup.cs#L53-L55
@@ -41,7 +41,7 @@ namespace BlazorAO.Controllers
         private (int min, int max) ParseHighlightRange(string range)
         {
             if (string.IsNullOrEmpty(range)) return (-1, -1);
-                        
+
             var lineRange = range.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (lineRange.Length == 1) return (int.Parse(lineRange[0].Substring(1)), int.Parse(lineRange[0].Substring(1)));
