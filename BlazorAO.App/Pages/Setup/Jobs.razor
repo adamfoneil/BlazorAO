@@ -1,0 +1,54 @@
+﻿@page "/Setup/Jobs"
+@inject DapperCX<int, UserProfile> Data
+@attribute [Authorize]
+
+<h3>Jobs</h3>
+
+<ErrorMessage @ref="error"/>
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <div>
+        <RadzenButton Icon="add_circle_outline" Text="Add" Click="InsertRow" />
+    </div>
+
+    <div class="d-flex align-items-center">
+        <ActiveFilter @bind-Value="query.IsActive"/>
+        <RadzenButton Text="Refresh" Click="RefreshList" Icon="refresh" Class="ml-2"/>
+    </div>
+</div>
+
+<RadzenGrid TItem="Job" @ref="grid" Data="data">
+	<Columns>
+		<RadzenGridColumn TItem="Job" Title="Client" Property="ClientId">
+			<EditTemplate Context="j">
+				<RadzenDropDown @bind-Value="j.ClientId"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+		<RadzenGridColumn TItem="Job" Title="Job Name/Number" Property="Name">
+			<EditTemplate Context="j">
+				<RadzenTextBox @bind-Value="j.Name"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+		<RadzenGridColumn TItem="Job" Title="Active" Property="IsActive">
+			<EditTemplate Context="j">
+				<RadzenSwitch @bind-Value="j.IsActive"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+	</Columns>
+</RadzenGrid>
+
+@code {
+    RadzenGrid<Job> grid;
+    IEnumerable<Job> data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+    }
+
+    async Task RefreshList()
+    {
+		data = await 
+    }
+}
