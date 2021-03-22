@@ -7,12 +7,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BlazorAO.Models
 {
     /// <summary>
-    /// record of hours worked by an employee on a job, or an employees expenses for reimbursment
+    /// record of hours worked by an employee on a job
     /// </summary>
     public class WorkRecord : BaseTable
     {
         [References(typeof(UserProfile))]
-        public int EmployeeUserId { get; set; }
+        public int UserId { get; set; }
 
         [References(typeof(Job))]
         public int JobId { get; set; }
