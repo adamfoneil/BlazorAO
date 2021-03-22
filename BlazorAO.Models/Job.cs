@@ -1,6 +1,7 @@
 ﻿using AO.Models;
 using BlazorAO.Models.Conventions;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlazorAO.Models
 {
@@ -18,5 +19,11 @@ namespace BlazorAO.Models
         public int? ManagerId { get; set; }
 
         public bool IsActive { get; set; } = true;
+
+        [NotMapped]
+        public string ClientName { get; set; }
+
+        [NotMapped]
+        public string ManagerName { get; set; }
     }
 }

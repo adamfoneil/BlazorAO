@@ -7,8 +7,8 @@ namespace BlazorAO.Models
     [UniqueConstraint(nameof(InvoiceNumber))]
     public class Invoice : BaseTable
     {
-        [References(typeof(Client))]
-        public int ClientId { get; set; }
+        [References(typeof(Job))]
+        public int JobId { get; set; }
                 
         public int InvoiceNumber { get; set; }
 

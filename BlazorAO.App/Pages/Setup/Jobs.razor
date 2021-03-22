@@ -17,38 +17,64 @@
     </div>
 </div>
 
-<RadzenGrid TItem="Job" @ref="grid" Data="data">
+<RadzenGrid TItem="Job" @ref="grid" Data="data" RowCreate="SaveRow" RowUpdate="SaveRow">
 	<Columns>
 		<RadzenGridColumn TItem="Job" Title="Client" Property="ClientId">
+            <Template Context="j">
+                <span>@j.ClientName</span>
+            </Template>
 			<EditTemplate Context="j">
-				<RadzenDropDown @bind-Value="j.ClientId"/>
+				<RadzenDropDown @bind-Value="j.ClientId" Data="clients" ValueProperty="Id" TextProperty="Name"/>
 			</EditTemplate>
 		</RadzenGridColumn>
+
 		<RadzenGridColumn TItem="Job" Title="Job Name/Number" Property="Name">
 			<EditTemplate Context="j">
 				<RadzenTextBox @bind-Value="j.Name"/>
 			</EditTemplate>
 		</RadzenGridColumn>
+
 		<RadzenGridColumn TItem="Job" Title="Active" Property="IsActive">
 			<EditTemplate Context="j">
 				<RadzenSwitch @bind-Value="j.IsActive"/>
 			</EditTemplate>
 		</RadzenGridColumn>
+
+        <GridControls Grid="grid" TItem="Job" DeleteRow="DeleteRow"/>
 	</Columns>
 </RadzenGrid>
 
+<GitHubLink/>
+
 @code {
+    ErrorMessage error;
     RadzenGrid<Job> grid;
     IEnumerable<Job> data;
+    MyJobs query = new MyJobs();
+    IEnumerable<Client> clients;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-
+        query.WorkspaceId = Data.User?.WorkspaceId ?? 0;
+        clients = await Data.QueryAsync<Client>(new { workspaceId = Data.User?.WorkspaceId ?? 0 });
+        await RefreshList();
     }
 
     async Task RefreshList()
     {
-		data = await 
+        data = await Data.QueryAsync(query);
     }
+
+    async Task SaveRow(Job row) =>
+        await Data.TrySaveAsync(row,
+            onSuccess: async (id) => await RefreshList(),
+            onException: (exc) => error.Message = exc.Message);
+
+    async Task DeleteRow(Job row) =>
+        await Data.TryDeleteAsync<Job>(row.Id,
+            onSuccess: async () => await RefreshList(),
+            onException: (exc) => error.Message = exc.Message);
+
+    void InsertRow() => grid.InsertRow(new Job());
 }
