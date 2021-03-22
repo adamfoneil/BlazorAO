@@ -8,7 +8,7 @@ namespace BlazorAO.Models
     /// <summary>
     /// defines permissions at the workspace level (tenant-specific) as opposed to AspNetRole (application-level)
     /// </summary>
-    public class Permission : BaseTable
+    public class Permission : AppTable
     {
         [Key]
         [MaxLength(50)]

@@ -37,5 +37,10 @@ namespace BlazorAO.Models
 
         [MaxLength(255)]
         public string Comments { get; set; }
+
+        /// <summary>
+        /// submitted for approval
+        /// </summary>
+        public bool IsSubmitted { get; set; }
     }
 }

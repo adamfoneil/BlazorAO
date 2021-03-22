@@ -15,7 +15,7 @@ namespace BlazorAO.App.Queries
             ) SELECT
                 @workspaceId, @userId, [p].[Id], @userName, @localTime
             FROM
-                [dbo].[Permission] [p]
+                [app].[Permission] [p]
             WHERE
                 [p].[Id] IN @permissionIds")
         {

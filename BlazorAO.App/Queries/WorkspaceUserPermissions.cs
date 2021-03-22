@@ -20,7 +20,7 @@ namespace BlazorAO.App.Queries
                 [p].[Name]
             FROM
                 [dbo].[WorkspaceUserPermission] [wup]
-                INNER JOIN [dbo].[Permission] [p] ON [wup].[PermissionId]=[p].[Id]
+                INNER JOIN [app].[Permission] [p] ON [wup].[PermissionId]=[p].[Id]
             WHERE
                 [wup].[WorkspaceId]=@workspaceId
             ORDER BY

@@ -22,6 +22,9 @@ namespace BlazorAO.Models
         /// </summary>
         public bool AllowInvoicing { get; set; }
 
+        [MaxLength(50)]
+        public string InvoiceEmail { get; set; }
+
         public bool IsActive { get; set; } = true;
     }
 }
