@@ -25,5 +25,8 @@ namespace BlazorAO.Models
 
         [NotMapped]
         public string ManagerName { get; set; }
+
+        [NotMapped]
+        public string JobDisplayName { get; set; }
     }
 }

@@ -11,6 +11,10 @@ namespace BlazorAO.App.Extensions
             return date.Date.AddDays(addDays);
         }
 
+        public static string MonthName(int month, bool abbreviate) => (abbreviate) ? 
+            MonthNameInner(month, "MMM") :
+            MonthNameInner(month, "MMMM");
 
+        private static string MonthNameInner(int month, string format) => new DateTime(DateTime.Today.Year, month, 1).ToString(format);
     }
 }

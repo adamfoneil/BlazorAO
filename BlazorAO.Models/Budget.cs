@@ -21,6 +21,6 @@ namespace BlazorAO.Models
         public int Month { get; set; }
 
         [Column(TypeName = "money")]
-        public decimal Amount { get; set; }
+        public decimal Amount { get; set; }        
     }
 }

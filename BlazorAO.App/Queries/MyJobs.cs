@@ -12,7 +12,8 @@ namespace BlazorAO.App.Queries
             @"SELECT 
                 [j].*,
                 [c].[Name] AS [ClientName],
-                [u].[LastName] + ', ' + [u].[FirstName] AS [ManagerName]
+                [u].[LastName] + ', ' + [u].[FirstName] AS [ManagerName],
+                [c].[Name] + ' - ' + [j].[Name] AS [JobDisplayName]
             FROM 
                 [dbo].[Job] [j]
                 INNER JOIN [dbo].[Client] [c] ON [j].[ClientId]=[c].[Id]
