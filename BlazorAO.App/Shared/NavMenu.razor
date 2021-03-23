@@ -46,6 +46,7 @@
     IEnumerable<MenuItem> GetMenuItems() => new MenuItem[]
     {
         new MenuItem() { Text = "Home", Href = "/", Icon = "oi-home", IsEnabled = true, Match = NavLinkMatch.All },
+        new MenuItem() { Text = "My Hours", Href = "/MyHours", Icon = "oi-timer", IsEnabled = true },
         new MenuItem() { Text = "Setup", Href = "/Setup", Icon = "oi-wrench", IsEnabled = true },                        
         new MenuItem() { Text = "App Example", Href = "/ProjectWork", Icon = "oi-book", IsEnabled = true },
         new MenuItem() { Text = "Form Examples", Href= "/Forms", Icon = "oi-spreadsheet", IsEnabled = false },
