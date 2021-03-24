@@ -11,6 +11,7 @@ namespace BlazorAO.App.Extensions
             using (var cn = data.GetConnection())
             {
                 foreach (var row in Permission.SeedData) await data.MergeAsync(row);
+                foreach (var row in RecurringTaskType.SeedData) await data.MergeAsync(row);
             }
         }
     }

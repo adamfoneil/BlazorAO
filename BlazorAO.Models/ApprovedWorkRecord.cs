@@ -5,16 +5,16 @@ using System.ComponentModel.DataAnnotations;
 namespace BlazorAO.Models
 {
     /// <summary>
-    /// indicates a manager's approval of a work record, allowing it to be invoiced
+    /// indicates a manager's approval of a work record along with invoicing approval
     /// </summary>
     public class ApprovedWorkRecord : BaseTable
     {
         [Key]
-        [References(typeof(WorkRecord))]
-        public int WorkRecordId { get; set; }
+        [References(typeof(WorkHours))]
+        public int WorkHoursId { get; set; }
 
         /// <summary>
-        /// WorkRecord.AllowInvoicing, but manager may override
+        /// include on invoice? Based on Client.AllowInvoicing, but manager may override
         /// </summary>
         public bool AllowInvoicing { get; set; }
     }

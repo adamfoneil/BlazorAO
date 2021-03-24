@@ -9,10 +9,13 @@ namespace BlazorAO.Models
     /// <summary>
     /// record of hours worked by an employee on a job
     /// </summary>
-    public class WorkRecord : BaseTable
+    public class WorkHours : BaseTable
     {
         [References(typeof(UserProfile))]
         public int UserId { get; set; }
+
+        [References(typeof(Workspace))]
+        public int WorkspaceId { get; set; }
 
         [References(typeof(Job))]
         public int JobId { get; set; }
@@ -28,12 +31,6 @@ namespace BlazorAO.Models
         /// </summary>
         [Column(TypeName = "decimal(5,2)")]
         public decimal Hours { get; set; }
-
-        /// <summary>
-        /// if true, then manager must approve hours so it can be invoiced
-        /// if false, then work is considered overhead
-        /// </summary>
-        public bool AllowInvoicing { get; set; }
 
         [MaxLength(255)]
         public string Comments { get; set; }

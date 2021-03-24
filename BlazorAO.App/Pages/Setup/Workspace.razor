@@ -52,21 +52,94 @@
     </EditForm>
 }
 
+<h4>Recurring Tasks</h4>
+<p>Use this to assign recurring hours approval and invoicing tasks to the appropriate manager.</p>
+
+<div class="mb-2">
+    <RadzenButton Icon="add_circle_outline" Text="Add" Click="InsertRow" />
+</div>
+
+<RadzenGrid TItem="MyRecurringTasksResult" Data="tasks" @ref="grid" RowCreate="SaveTask" RowUpdate="SaveTask">
+	<Columns>
+		<RadzenGridColumn TItem="MyRecurringTasksResult" Title="Assigned To" Property="UserId">
+            <Template Context="rt">
+                <span>@rt.AssignedToUser</span>
+            </Template>
+			<EditTemplate Context="rt">
+				<RadzenDropDown @bind-Value="rt.UserId" Data="users" ValueProperty="UserId" TextProperty="DisplayName"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+		
+        <RadzenGridColumn TItem="MyRecurringTasksResult" Title="Task Type" Property="TaskTypeId">
+            <Template Context="rt">
+                <span>@rt.TaskTypeName</span>
+            </Template>
+			<EditTemplate Context="rt">
+				<RadzenDropDown @bind-Value="rt.TaskTypeId" Data="taskTypes" ValueProperty="Id" TextProperty="Name"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+		
+        <RadzenGridColumn TItem="MyRecurringTasksResult" Title="Next Due Date" Property="NextDueDate">
+            <Template Context="rt">
+                <span>@rt.NextDueDate.ToString("ddd M/d/yy")</span>
+            </Template>
+			<EditTemplate Context="rt">
+				<RadzenDatePicker @bind-Value="rt.NextDueDate" DateFormat="M/d/yy"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+
+        <RadzenGridColumn TItem="MyRecurringTasksResult" Title="Date Interval" Property="DateAddInterval">
+            <Template Context="rt">
+                <span>every @rt.DateAddNumber @dateIntervals[rt.DateAddInterval]</span>
+            </Template>
+			<EditTemplate Context="rt">
+                <div class="d-flex align-items-center">
+                    <RadzenNumeric @bind-Value="rt.DateAddNumber" Style="width:70px"/>
+				    <RadzenDropDown @bind-Value="rt.DateAddInterval" Data="dateIntervals" ValueProperty="Key" TextProperty="Value" Style="width:100px"/>
+                </div>                
+			</EditTemplate>
+		</RadzenGridColumn>
+		
+        <GridControls Grid="grid" DeleteRow="DeleteTask" TItem="MyRecurringTasksResult"/>
+	</Columns>
+</RadzenGrid>
+
 <GitHubLink/>
 
 @code {
     BlazorAO.Models.Workspace workspace;
     ErrorMessage error;
     Dictionary<int, string> weekDays;
-    bool? azureConnectionValid;    
+    bool? azureConnectionValid;
+
+    // task grid
+    IEnumerable<MyRecurringTasksResult> tasks;
+    RadzenGrid<MyRecurringTasksResult> grid;
+    MyRecurringTasksResult editRow;
+    // grid dropdowns
+    IEnumerable<UserSelectResult> users;
+    IEnumerable<RecurringTaskType> taskTypes;
+    Dictionary<string, string> dateIntervals;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         await Data.InitDefaultTenantAsync();
+        await Data.CreateSeedDataAsync();
 
         workspace = await Data.GetAsync<BlazorAO.Models.Workspace>(Data.User.WorkspaceId ?? 0);
-        weekDays = EnumHelper.SqlServerWeekDays();        
+        weekDays = EnumHelper.SqlServerWeekDays();
+
+        taskTypes = await Data.QueryAsync<RecurringTaskType>();
+        users = await Data.QueryAsync(new UserSelect() { WorkspaceId = Data.User?.WorkspaceId ?? 0 });
+        dateIntervals = new Dictionary<string, string>()
+        {
+            ["m"] = "Months",
+            ["wk"] = "Weeks",
+            ["d"] = "Days"
+        };
+
+        await RefreshList();
     }
 
     async Task SaveWorkspace()
@@ -78,4 +151,30 @@
     {
         azureConnectionValid = await AzureTester.TestConnectionAsync(workspace.StorageConnectionString, workspace.StorageContainer);
     }
+
+    async Task RefreshList()
+    {
+        tasks = await Data.QueryAsync(new MyRecurringTasks()
+        {
+            WorkspaceId = Data.User?.WorkspaceId ?? 0
+        });
+    }
+
+    void InsertRow() => grid.InsertRow(new MyRecurringTasksResult()
+    {
+        WorkspaceId = Data.User?.WorkspaceId ?? 0
+    });
+
+    async Task SaveTask(MyRecurringTasksResult row)
+    {
+        var saveRow = row.CopyAs<RecurringTask>();
+        await Data.TrySaveAsync(saveRow,
+            onSuccess: async (id) => await RefreshList(),
+            onException: (exc) => error.Message = exc.Message);
+    }
+
+    async Task DeleteTask(MyRecurringTasksResult row) =>
+        await Data.TryDeleteAsync<RecurringTask>(row.Id,
+            onException: (exc) => error.Message = exc.Message,
+            onSuccess: async () => await RefreshList());
 }

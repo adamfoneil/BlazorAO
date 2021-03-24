@@ -11,12 +11,15 @@ namespace BlazorAO.Models
     public class InvoicedWorkRecord : BaseTable
     {
         [Key]
-        [References(typeof(WorkRecord))]
-        public int WorkRecordId { get; set; }
+        [References(typeof(WorkHours))]
+        public int WorkHoursId { get; set; }
 
         [References(typeof(Invoice))]
         public int InvoiceId { get; set; }
 
+        /// <summary>
+        /// invoice rate (based on InvoiceRate.Amount)
+        /// </summary>
         [Column(TypeName = "money")]
         public decimal Rate { get; set; }
     }

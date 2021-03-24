@@ -33,5 +33,11 @@ namespace BlazorAO.Models
 
         [Column(TypeName = "date")]
         public DateTime NextDueDate { get; set; }
+
+        [NotMapped]
+        public string UserDisplayName { get; set; }
+
+        [NotMapped]
+        public string TaskName { get; set; }
     }
 }
