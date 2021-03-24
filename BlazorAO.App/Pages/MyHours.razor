@@ -4,6 +4,112 @@
 
 <h3>My Hours</h3>
 
-@code {
+<ErrorMessage @ref="error"/>
 
+<div class="d-flex mb-2">
+    <RadzenButton Icon="add_circle_outline" Text="Add" Click="InsertRow" />
+</div>
+
+<RadzenGrid TItem="MyHoursResult" Data="data" RowCreate="SaveRow" RowUpdate="SaveRow" @ref="grid">
+	<Columns>
+		<RadzenGridColumn TItem="MyHoursResult" Title="Client" Property="ClientId">
+			<Template Context="wh">
+				<span>@wh.ClientName</span>
+			</Template>
+			<EditTemplate Context="wh">
+				<RadzenDropDown @bind-Value="wh.ClientId" Data="clients" ValueProperty="Key" TextProperty="Value"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+		<RadzenGridColumn TItem="MyHoursResult" Title="Job" Property="JobId">
+			<Template Context="wh">
+				<span>@wh.JobName</span>
+			</Template>
+			<EditTemplate Context="wh">
+				<RadzenDropDown @bind-Value="wh.JobId" Data="jobSelect[wh.ClientId]" ValueProperty="Id" TextProperty="Name"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+		<RadzenGridColumn TItem="MyHoursResult" Title="Work Type" Property="WorkTypeId">
+			<Template Context="wh">
+				<span>@wh.WorkTypeName</span>
+			</Template>
+			<EditTemplate Context="wh">
+				<RadzenDropDown @bind-Value="wh.WorkTypeId" Data="workTypes" ValueProperty="Id" TextProperty="Name"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+		<RadzenGridColumn TItem="MyHoursResult" Title="Date" Property="Date">
+			<Template Context="wh">
+				<span>@wh.Date.ToString("ddd M/d/yy")</span>
+			</Template>
+			<EditTemplate Context="wh">
+				<RadzenDatePicker @bind-Value="wh.Date" DateFormat="ddd M/d/yy"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+		<RadzenGridColumn TItem="MyHoursResult" Title="Hours" Property="Hours">
+			<EditTemplate Context="wh">
+				<RadzenNumeric @bind-Value="wh.Hours"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+		<RadzenGridColumn TItem="MyHoursResult" Title="Comments" Property="Comments">
+			<Template Context="wh">
+				<span>@wh.Comments</span>
+			</Template>
+			<EditTemplate Context="wh">
+				<RadzenTextBox @bind-Value="wh.Comments"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+
+		<GridControls Grid="grid" DeleteRow="DeleteRow" TItem="MyHoursResult"/>
+	</Columns>
+</RadzenGrid>
+
+
+@code {
+    ErrorMessage error;
+    // grid
+    RadzenGrid<MyHoursResult> grid;
+    IEnumerable<MyHoursResult> data;
+
+    // dropdowns
+    IEnumerable<Job> allJobs;
+    Dictionary<int, string> clients;
+    ILookup<int, Job> jobSelect;
+	IEnumerable<WorkType> workTypes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        allJobs = await Data.QueryAsync(new MyJobs() { WorkspaceId = Data.User?.WorkspaceId ?? 0 });
+        clients = allJobs.GroupBy(row => row.ClientId).ToDictionary(grp => grp.Key, grp => grp.First().ClientName);
+        jobSelect = allJobs.ToLookup(row => row.ClientId);
+		workTypes = await Data.QueryAsync<WorkType>(new { workspaceId = Data.User?.WorkspaceId ?? 0, isActive = true });
+        await RefreshList();
+    }
+
+    async Task RefreshList()
+    {
+        data = await Data.QueryAsync(new Queries.MyHours()
+        {
+            WorkspaceId = Data.User?.WorkspaceId ?? 0,
+            UserId = Data.User?.UserId ?? 0
+        });
+    }
+
+    async Task SaveRow(MyHoursResult row)
+    {
+        var saveRow = row.CopyAs<WorkHours>();
+        await Data.TrySaveAsync(saveRow,
+            onSuccess: async (id) => await RefreshList(),
+            onException: (exc) => error.Message = exc.Message);
+    }
+
+    async Task DeleteRow(MyHoursResult row) =>
+        await Data.TryDeleteAsync<WorkHours>(row.Id,
+            onSuccess: async () => await RefreshList(),
+            onException: (exc) => error.Message = exc.Message);
+
+    void InsertRow() => grid.InsertRow(new MyHoursResult()
+    {
+		WorkspaceId = Data.User?.WorkspaceId ?? 0,
+        UserId = Data.User?.UserId ?? 0,
+		Date = DateTime.Today
+    });
 }
