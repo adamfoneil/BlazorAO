@@ -175,6 +175,6 @@
 
     async Task DeleteTask(MyRecurringTasksResult row) =>
         await Data.TryDeleteAsync<RecurringTask>(row.Id,
-            onException: (exc) => error.Message = exc.Message,
-            onSuccess: async () => await RefreshList());
+            onSuccess: async () => await RefreshList(),
+            onException: (exc) => error.Message = exc.Message);
 }

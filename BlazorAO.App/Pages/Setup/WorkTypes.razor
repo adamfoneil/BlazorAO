@@ -1,0 +1,74 @@
+﻿@page "/Setup/WorkTypes"
+@inject DapperCX<int, UserProfile> Data
+@attribute [Authorize]
+
+<h3>Work Types</h3>
+
+<ErrorMessage @ref="error"/>
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <div>
+        <RadzenButton Icon="add_circle_outline" Text="Add" Click="InsertRow" />
+    </div>
+
+    <div class="d-flex align-items-center">
+        <ActiveFilter @bind-Value="query.IsActive"/>
+        <RadzenButton Text="Refresh" Click="RefreshList" Icon="refresh" Class="ml-2"/>
+    </div>
+</div>
+
+<RadzenGrid TItem="WorkType" @ref="grid" Data="data" RowCreate="SaveRow" RowUpdate="SaveRow">
+	<Columns>
+		<RadzenGridColumn TItem="WorkType" Title="Work Type Name" Property="Name">
+			<Template Context="wt">
+				<span>@wt.Name</span>
+			</Template>
+			<EditTemplate Context="wt">
+				<RadzenTextBox @bind-Value="wt.Name"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+
+		<RadzenGridColumn TItem="WorkType" Title="Active" Property="IsActive">
+			<Template Context="wt">
+				<span>@wt.IsActive</span>
+			</Template>
+			<EditTemplate Context="wt">
+				<RadzenSwitch @bind-Value="wt.IsActive"/>
+			</EditTemplate>
+		</RadzenGridColumn>
+
+		<GridControls Grid="grid" DeleteRow="DeleteRow" TItem="WorkType"/>
+	</Columns>
+</RadzenGrid>
+
+<GitHubLink/>
+
+@code {
+    ErrorMessage error;
+    RadzenGrid<WorkType> grid;
+    IEnumerable<WorkType> data;
+    MyWorkTypes query = new MyWorkTypes();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshList();
+    }
+
+    async Task RefreshList()
+    {
+        query.WorkspaceId = Data.User?.WorkspaceId ?? 0;
+        data = await Data.QueryAsync(query);
+    }
+
+    void InsertRow() => grid.InsertRow(new WorkType() { WorkspaceId = Data.User?.WorkspaceId ?? 0 });
+
+    async Task SaveRow(WorkType row) =>
+        await Data.TrySaveAsync(row,
+            onSuccess: async (id) => await RefreshList(),
+            onException: (exc) => error.Message = exc.Message);
+    
+    async Task DeleteRow(WorkType row) =>
+        await Data.TryDeleteAsync<WorkType>(row.Id,
+            onSuccess: async () => await RefreshList(),
+            onException: (exc) => error.Message = exc.Message);
+}
