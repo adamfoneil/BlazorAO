@@ -1,10 +1,10 @@
-﻿@page "/Setup/Users" 
+﻿@page "/Setup/Users"
 @inject DapperCX<int, UserProfile> Data
 @attribute [Authorize]
 
 <h3>Users</h3>
 
-<ErrorMessage @ref="error"/>
+<ErrorMessage @ref="error" />
 
 <div class="d-flex justify-content-between align-items-center mb-2">
     <div>
@@ -12,41 +12,41 @@
     </div>
 
     <div class="d-flex align-items-center">
-        <ActiveFilter @bind-Value="query.IsActive"/>
-        <RadzenButton Text="Refresh" Click="RefreshList" Icon="refresh" Class="ml-2"/>
+        <ActiveFilter @bind-Value="query.IsActive" />
+        <RadzenButton Text="Refresh" Click="RefreshList" Icon="refresh" Class="ml-2" />
     </div>
 </div>
 
 <RadzenGrid TItem="WorkspaceUsersResult" @ref="grid" Data="data" RowEdit="OnRowEdit" RowUpdate="SaveUser">
-	<Columns>
-		<RadzenGridColumn TItem="WorkspaceUsersResult" Title="User Name" Property="UserName">
-			<Template Context="u">
-				<span>@u.UserName</span>
-			</Template>
-		</RadzenGridColumn>
+    <Columns>
+        <RadzenGridColumn TItem="WorkspaceUsersResult" Title="User Name" Property="UserName">
+            <Template Context="u">
+                <span>@u.UserName</span>
+            </Template>
+        </RadzenGridColumn>
 
-		<RadzenGridColumn TItem="WorkspaceUsersResult" Title="First Name" Property="FirstName">
-			<Template Context="u">
-				<span>@u.FirstName</span>
-			</Template>
-		</RadzenGridColumn>
+        <RadzenGridColumn TItem="WorkspaceUsersResult" Title="First Name" Property="FirstName">
+            <Template Context="u">
+                <span>@u.FirstName</span>
+            </Template>
+        </RadzenGridColumn>
 
-		<RadzenGridColumn TItem="WorkspaceUsersResult" Title="Last Name" Property="LastName">
-			<Template Context="u">
-				<span>@u.LastName</span>
-			</Template>
-		</RadzenGridColumn>
+        <RadzenGridColumn TItem="WorkspaceUsersResult" Title="Last Name" Property="LastName">
+            <Template Context="u">
+                <span>@u.LastName</span>
+            </Template>
+        </RadzenGridColumn>
 
-		<RadzenGridColumn TItem="WorkspaceUsersResult" Title="Manager" Property="ManagerId">
-			<Template Context="u">
-				<span>@u.ManagerName</span>
-			</Template>
-			<EditTemplate Context="u">
-				<RadzenDropDown @bind-Value="u.ManagerId" Data="users" ValueProperty="UserId" TextProperty="DisplayName"/>
-			</EditTemplate>
-		</RadzenGridColumn>
+        <RadzenGridColumn TItem="WorkspaceUsersResult" Title="Manager" Property="ManagerId">
+            <Template Context="u">
+                <span>@u.ManagerName</span>
+            </Template>
+            <EditTemplate Context="u">
+                <RadzenDropDown @bind-Value="u.ManagerId" Data="users" ValueProperty="UserId" TextProperty="DisplayName" />
+            </EditTemplate>
+        </RadzenGridColumn>
 
-		<RadzenGridColumn Title="Roles" TItem="WorkspaceUsersResult">
+        <RadzenGridColumn Title="Roles" TItem="WorkspaceUsersResult">
             <Template Context="u">
                 <ul class="list-unstyled">
                     @foreach (var p in permissions[u.Id])
@@ -56,21 +56,21 @@
                 </ul>
             </Template>
             <EditTemplate Context="emp">
-                <RadzenDropDown Multiple="true" Data="allPermissions" ValueProperty="Id" TextProperty="Name" @bind-Value="selectedPermissionIds"/>
+                <RadzenDropDown Multiple="true" Data="allPermissions" ValueProperty="Id" TextProperty="Name" @bind-Value="selectedPermissionIds" />
             </EditTemplate>
         </RadzenGridColumn>
 
-		<RadzenGridColumn TItem="WorkspaceUsersResult" Title="Active" Property="IsActive">
-			<EditTemplate Context="u">
-				<RadzenSwitch @bind-Value="u.IsActive"/>
-			</EditTemplate>
-		</RadzenGridColumn>
+        <RadzenGridColumn TItem="WorkspaceUsersResult" Title="Active" Property="IsActive">
+            <EditTemplate Context="u">
+                <RadzenSwitch @bind-Value="u.IsActive" />
+            </EditTemplate>
+        </RadzenGridColumn>
 
-		<GridControls Grid="grid" TItem="WorkspaceUsersResult"/>
-	</Columns>
+        <GridControls Grid="grid" TItem="WorkspaceUsersResult" />
+    </Columns>
 </RadzenGrid>
 
-<GitHubLink/>
+<GitHubLink />
 
 @code {
     ErrorMessage error;
