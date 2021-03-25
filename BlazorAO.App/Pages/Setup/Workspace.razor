@@ -61,15 +61,6 @@
 
 <RadzenGrid TItem="MyRecurringTasksResult" Data="tasks" @ref="grid" RowCreate="SaveTask" RowUpdate="SaveTask">
     <Columns>
-        <RadzenGridColumn TItem="MyRecurringTasksResult" Title="Assigned To" Property="UserId">
-            <Template Context="rt">
-                <span>@rt.AssignedToUser</span>
-            </Template>
-            <EditTemplate Context="rt">
-                <RadzenDropDown @bind-Value="rt.UserId" Data="users" ValueProperty="UserId" TextProperty="DisplayName" />
-            </EditTemplate>
-        </RadzenGridColumn>
-
         <RadzenGridColumn TItem="MyRecurringTasksResult" Title="Task Type" Property="TaskTypeId">
             <Template Context="rt">
                 <span>@rt.TaskTypeName</span>

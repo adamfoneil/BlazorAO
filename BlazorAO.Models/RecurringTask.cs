@@ -13,10 +13,6 @@ namespace BlazorAO.Models
         public int WorkspaceId { get; set; }
 
         [Key]
-        [References(typeof(UserProfile))]
-        public int UserId { get; set; }
-
-        [Key]
         [References(typeof(RecurringTaskType))]
         public int TaskTypeId { get; set; }
 

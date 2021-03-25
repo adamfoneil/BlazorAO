@@ -18,8 +18,7 @@ namespace BlazorAO.App.Queries
         public int DateAddNumber { get; set; }
         public int TaskTypeId { get; set; }
         public int UserId { get; set; }
-        public string TaskTypeName { get; set; }
-        public string AssignedToUser { get; set; }
+        public string TaskTypeName { get; set; }        
     }
 
     public class MyRecurringTasks : TestableQuery<MyRecurringTasksResult>
@@ -27,12 +26,10 @@ namespace BlazorAO.App.Queries
         public MyRecurringTasks() : base(
             @"SELECT
                 [rt].*,
-                [rtt].[Name] AS [TaskTypeName],
-                COALESCE([u].[LastName] + ', ' + [u].[FirstName], [u].[UserName]) AS [AssignedToUser]
+                [rtt].[Name] AS [TaskTypeName]
             FROM
                 [dbo].[RecurringTask] [rt]
-                INNER JOIN [app].[RecurringTaskType] [rtt] ON [rt].[TaskTypeId]=[rtt].[Id]
-                INNER JOIN [dbo].[AspNetUsers] [u] ON [rt].[UserId]=[u].[UserId]
+                INNER JOIN [app].[RecurringTaskType] [rtt] ON [rt].[TaskTypeId]=[rtt].[Id]                
             WHERE
                 [rt].[WorkspaceId]=@workspaceId")
         {
