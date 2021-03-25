@@ -18,3 +18,8 @@ The sample app in this repo is a multi-tenant time entry, expense tracking and b
     - [GridControls](https://github.com/adamfoneil/BlazorAO/blob/master/BlazorAO.App/Components/GridControls.razor) is how I apply standard edit, delete, save, and cancel buttons across all my data grids.
     - Many of my model classes have a `bool IsActive` property grid's often need to filter by. [ActiveFilter](https://github.com/adamfoneil/BlazorAO/blob/master/BlazorAO.App/Components/ActiveFilter.razor) provides a standard active/inactive filter control for use with all grids.
     - [ErrorMessage](https://github.com/adamfoneil/BlazorAO/blob/master/BlazorAO.App/Components/ErrorMessage.razor) provides my standard error display functionality used most everwhere.
+
+## More
+The [Wiki](https://github.com/adamfoneil/BlazorAO/wiki) goes into more detail, so please check there for more content.
+
+If you want to see a feature implemented or have a question, please submit an issue.
