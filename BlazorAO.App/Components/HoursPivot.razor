@@ -4,11 +4,11 @@
     var rowIndex = 0;
 }
 
-@foreach (var wkGrp in Data.GroupBy(row => row.WeekNumber))
+@foreach (var wkGrp in Data.GroupBy(row => row.WeekNumber).OrderBy(grp => grp.First().SortKey))
 {
     weekNum++;
     var weekDates = WeekDates(wkGrp);
-    <h3>Week @weekNum</h3>
+    <h3 class="mt-2">Week @weekNum</h3>
     <div class="rz-datatable">
         <table style="width:100%">
             <thead class="rz-datatable-thead">

@@ -26,8 +26,7 @@ namespace BlazorAO.App.Queries
         public string ModifiedBy { get; set; }
         public DateTime? DateModified { get; set; }
         public int WeekNumber { get; set; }
-
-        //public DateTime StartOfWeek => 
+        public string SortKey => $"{Date.Year}-{WeekNumber:00}";
     }
 
     public class MyHours : TestableQuery<MyHoursResult>
