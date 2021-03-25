@@ -29,7 +29,7 @@ namespace BlazorAO.App.Queries
 
         protected override IEnumerable<ITestableQuery> GetTestCasesInner()
         {
-            throw new NotImplementedException();
+            yield return new RebuildUserPermissions() { WorkspaceId = 1, UserId = -1 };
         }
     }
 }

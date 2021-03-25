@@ -20,6 +20,7 @@
                 <RadzenDropDown @bind-Value="wh.ClientId" Data="clients" ValueProperty="Key" TextProperty="Value" />
             </EditTemplate>
         </RadzenGridColumn>
+
         <RadzenGridColumn TItem="MyHoursResult" Title="Job" Property="JobId">
             <Template Context="wh">
                 <span>@wh.JobName</span>
@@ -28,6 +29,7 @@
                 <RadzenDropDown @bind-Value="wh.JobId" Data="jobSelect[wh.ClientId]" ValueProperty="Id" TextProperty="Name" />
             </EditTemplate>
         </RadzenGridColumn>
+
         <RadzenGridColumn TItem="MyHoursResult" Title="Work Type" Property="WorkTypeId">
             <Template Context="wh">
                 <span>@wh.WorkTypeName</span>
@@ -36,6 +38,7 @@
                 <RadzenDropDown @bind-Value="wh.WorkTypeId" Data="workTypes" ValueProperty="Id" TextProperty="Name" />
             </EditTemplate>
         </RadzenGridColumn>
+
         <RadzenGridColumn TItem="MyHoursResult" Title="Date" Property="Date">
             <Template Context="wh">
                 <span>@wh.Date.ToString("ddd M/d/yy")</span>
@@ -44,11 +47,13 @@
                 <RadzenDatePicker @bind-Value="wh.Date" DateFormat="ddd M/d/yy" />
             </EditTemplate>
         </RadzenGridColumn>
+
         <RadzenGridColumn TItem="MyHoursResult" Title="Hours" Property="Hours">
             <EditTemplate Context="wh">
                 <RadzenNumeric @bind-Value="wh.Hours" />
             </EditTemplate>
         </RadzenGridColumn>
+
         <RadzenGridColumn TItem="MyHoursResult" Title="Comments" Property="Comments">
             <Template Context="wh">
                 <span>@wh.Comments</span>
