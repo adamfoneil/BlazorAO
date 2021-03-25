@@ -51,6 +51,9 @@ namespace Testing
         [TestMethod]
         public void WorkspaceUsers() => QueryHelper.Test<WorkspaceUsers>(GetConnection);
 
+        [TestMethod]
+        public void SubmitHours() => QueryHelper.Test<SubmitHours>(GetConnection);
+
         private SqlConnection GetConnection() => LocalDb.GetConnection("BlazorAO");
     }
 }

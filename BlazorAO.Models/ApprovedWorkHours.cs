@@ -7,7 +7,7 @@ namespace BlazorAO.Models
     /// <summary>
     /// indicates a manager's approval of a work record along with invoicing approval
     /// </summary>
-    public class ApprovedWorkRecord : BaseTable
+    public class ApprovedWorkHours : BaseTable
     {
         [Key]
         [References(typeof(WorkHours))]

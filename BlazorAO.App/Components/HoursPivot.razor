@@ -1,0 +1,92 @@
+﻿@{
+    if (Data == null) return;
+    var weekNum = 0;
+    var rowIndex = 0;
+}
+
+@foreach (var wkGrp in Data.GroupBy(row => row.WeekNumber))
+{
+    weekNum++;
+    var weekDates = WeekDates(wkGrp);
+    <h3>Week @weekNum</h3>
+    <div class="rz-datatable">
+        <table style="width:100%">
+            <thead class="rz-datatable-thead">
+                <tr class="rz-state-default">
+                    <th><span class="rz-column-title">Client</span></th>
+                    @foreach (var date in weekDates)
+                    {
+                        <th><span class="rz-column-title">@date.ToString("ddd M/d")</span></th>
+                    }
+                    <th><span class="rz-column-title">Total</span></th>
+                </tr>
+            </thead>
+            <tbody class="rz-datatable-data ui-widget-content ui-datatable-hoverable-rows">
+                @foreach (var jobGrp in wkGrp.GroupBy(row => row.ClientId))
+                {
+                    rowIndex++;
+                    var hoursByDay = jobGrp.ToLookup(row => row.Date);
+                    <tr class="rz-datatable-@Markup.EvenOdd(rowIndex)">
+                        <td>
+                            <span class="rz-cell-data">
+                                @jobGrp.First().ClientName
+                            </span>
+                        </td>
+                        @foreach (var date in weekDates)
+                        {
+                            <td>
+                                <span class="rz-cell-data">
+                                    @if (hoursByDay.Contains(date))
+                                    {
+                                        <span>@hoursByDay[date].Sum(row => row.Hours).ToString("n2")</span>
+                                    }
+                                </span>
+                            </td>
+                        }
+                        <td>
+                            <span class="rz-cell-data">
+                                @jobGrp.Sum(row => row.Hours)
+                            </span>
+                        </td>
+                    </tr>
+                }
+                @{ rowIndex++; }
+                <tr class="rz-datatable-@Markup.EvenOdd(rowIndex)">
+                    <td></td>
+                    @{
+                        var overallHoursByDay = wkGrp.ToLookup(row => row.Date);
+                    }
+                    @foreach (var date in weekDates)
+                    {
+                        <td>
+                            <span class="rz-cell-data">
+                                @if (overallHoursByDay.Contains(date))
+                                {
+                                    <span>@overallHoursByDay[date].Sum(row => row.Hours).ToString("n2")</span>
+                                }
+                            </span>
+                        </td>
+                    }
+                    <td>
+                        <span class="rz-cell-data">
+                            <strong>
+                                @wkGrp.Sum(row => row.Hours).ToString("n2")
+                            </strong>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public IEnumerable<MyHoursResult> Data { get; set; }
+
+    private IEnumerable<DateTime> WeekDates(IGrouping<int, MyHoursResult> group)
+    {
+        var sunday = group.Min(row => row.Date).SoonestBefore(DayOfWeek.Sunday);
+        for (int day = 0; day < 7; day++) yield return sunday.AddDays(day);
+    }
+}

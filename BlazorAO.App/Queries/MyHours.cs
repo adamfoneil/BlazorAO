@@ -26,6 +26,8 @@ namespace BlazorAO.App.Queries
         public string ModifiedBy { get; set; }
         public DateTime? DateModified { get; set; }
         public int WeekNumber { get; set; }
+
+        //public DateTime StartOfWeek => 
     }
 
     public class MyHours : TestableQuery<MyHoursResult>
@@ -52,13 +54,15 @@ namespace BlazorAO.App.Queries
         public int WorkspaceId { get; set; }
         public int UserId { get; set; }
 
-        [Case(true, "EXISTS(SELECT 1 FROM [dbo].[ApprovedWorkRecord] WHERE [WorkHoursId]=[wh].[Id])")]
-        [Case(false, "NOT EXISTS(SELECT 1 FROM [dbo].[ApprovedWorkRecord] WHERE [WorkHoursId]=[wh].[Id])")]
+        [Case(true, "EXISTS(SELECT 1 FROM [dbo].[ApprovedWorkHours] WHERE [WorkHoursId]=[wh].[Id])")]
+        [Case(false, "NOT EXISTS(SELECT 1 FROM [dbo].[ApprovedWorkHours] WHERE [WorkHoursId]=[wh].[Id])")]
         public bool? IsApproved { get; set; }
 
         protected override IEnumerable<ITestableQuery> GetTestCasesInner()
         {
             yield return new MyHours() { WorkspaceId = 1, UserId = 1 };
+            yield return new MyHours() { WorkspaceId = 1, UserId = 1, IsApproved = true };
+            yield return new MyHours() { WorkspaceId = 1, UserId = 1, IsApproved = false };
         }
     }
 }
