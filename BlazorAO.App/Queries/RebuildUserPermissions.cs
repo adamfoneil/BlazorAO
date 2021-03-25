@@ -29,7 +29,14 @@ namespace BlazorAO.App.Queries
 
         protected override IEnumerable<ITestableQuery> GetTestCasesInner()
         {
-            yield return new RebuildUserPermissions() { WorkspaceId = 1, UserId = -1 };
+            yield return new RebuildUserPermissions() 
+            { 
+                WorkspaceId = 1, 
+                UserId = -1, 
+                LocalTime = DateTime.Now, 
+                UserName = "adamo",
+                PermissionIds = new int[] { -1, -2, -3 }
+            };
         }
     }
 }

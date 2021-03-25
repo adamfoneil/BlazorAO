@@ -2,7 +2,7 @@
 using Dapper.QX.Interfaces;
 using System.Collections.Generic;
 
-namespace BlazorAO.Queries
+namespace BlazorAO.App.Queries
 {
     public class RemoveRole : TestableQuery<int>
     {

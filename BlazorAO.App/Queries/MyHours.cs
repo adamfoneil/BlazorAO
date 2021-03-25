@@ -1,4 +1,5 @@
 ﻿using Dapper.QX.Abstract;
+using Dapper.QX.Attributes;
 using Dapper.QX.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ namespace BlazorAO.App.Queries
         public DateTime DateCreated { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? DateModified { get; set; }
+        public int WeekNumber { get; set; }
     }
 
     public class MyHours : TestableQuery<MyHoursResult>
@@ -34,7 +36,8 @@ namespace BlazorAO.App.Queries
                 [j].[ClientId],
                 [j].[Name] AS [JobName],
                 [wt].[Name] AS [WorkTypeName],
-                [wh].*
+                [wh].*,
+                DATEPART(wk, [wh].[Date]) AS [WeekNumber]
             FROM
                 [dbo].[WorkHours] [wh]
                 INNER JOIN [dbo].[Job] [j] ON [wh].[JobId]=[j].[Id]
@@ -42,13 +45,16 @@ namespace BlazorAO.App.Queries
                 INNER JOIN [dbo].[WorkType] [wt] ON [wh].[WorkTypeId]=[wt].[Id]
             WHERE
                 [wh].[WorkspaceId]=@workspaceId AND
-                [wh].[UserId]=@userId AND
-                NOT EXISTS(SELECT 1 FROM [dbo].[ApprovedWorkRecord] WHERE [WorkHoursId]=[wh].[Id])")
+                [wh].[UserId]=@userId {andWhere}")
         {
         }
 
         public int WorkspaceId { get; set; }
         public int UserId { get; set; }
+
+        [Case(true, "EXISTS(SELECT 1 FROM [dbo].[ApprovedWorkRecord] WHERE [WorkHoursId]=[wh].[Id])")]
+        [Case(false, "NOT EXISTS(SELECT 1 FROM [dbo].[ApprovedWorkRecord] WHERE [WorkHoursId]=[wh].[Id])")]
+        public bool? IsApproved { get; set; }
 
         protected override IEnumerable<ITestableQuery> GetTestCasesInner()
         {
