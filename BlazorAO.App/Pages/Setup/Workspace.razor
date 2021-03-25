@@ -5,44 +5,44 @@
 
 <h3>Workspace</h3>
 
-<ErrorMessage @ref="error"/>
+<ErrorMessage @ref="error" />
 
 @if (workspace != null)
 {
     <EditForm Model="workspace" OnSubmit="SaveWorkspace">
 
         <FormField Label="Workspace Name:">
-            <RadzenTextBox @bind-Value="workspace.Name"/>
+            <RadzenTextBox @bind-Value="workspace.Name" />
         </FormField>
 
         <FormField Label="Next Invoice:">
-            <RadzenNumeric @bind-Value="workspace.NextInvoice"/>
+            <RadzenNumeric @bind-Value="workspace.NextInvoice" />
         </FormField>
 
         <FormField Label="Azure Storage Connection:">
             <ShowHide>
-                <RadzenTextBox @bind-Value="workspace.StorageConnectionString" Style="width:100%"/>
-            </ShowHide>            
+                <RadzenTextBox @bind-Value="workspace.StorageConnectionString" Style="width:100%" />
+            </ShowHide>
         </FormField>
 
         <FormField Label="Container Name:">
             <div class="d-flex align-items-center">
-                <RadzenTextBox @bind-Value="workspace.StorageContainer"/>
+                <RadzenTextBox @bind-Value="workspace.StorageContainer" />
                 <button class="btn btn-secondary" @onclick="TestAzureConnection">Test Connection</button>
                 @if (azureConnectionValid.HasValue)
                 {
                     <div class="ml-2">
-                    @if (azureConnectionValid.Value)
-                    {
-                        <span class="oi oi-circle-check" style="color:green"></span>
-                    }
-                    else
-                    {
-                        <span class="oi oi-warning" style="color:red"></span>
-                    }
+                        @if (azureConnectionValid.Value)
+                        {
+                            <span class="oi oi-circle-check" style="color:green"></span>
+                        }
+                        else
+                        {
+                            <span class="oi oi-warning" style="color:red"></span>
+                        }
                     </div>
                 }
-            </div>            
+            </div>
         </FormField>
 
         <FormField>
@@ -60,51 +60,51 @@
 </div>
 
 <RadzenGrid TItem="MyRecurringTasksResult" Data="tasks" @ref="grid" RowCreate="SaveTask" RowUpdate="SaveTask">
-	<Columns>
-		<RadzenGridColumn TItem="MyRecurringTasksResult" Title="Assigned To" Property="UserId">
+    <Columns>
+        <RadzenGridColumn TItem="MyRecurringTasksResult" Title="Assigned To" Property="UserId">
             <Template Context="rt">
                 <span>@rt.AssignedToUser</span>
             </Template>
-			<EditTemplate Context="rt">
-				<RadzenDropDown @bind-Value="rt.UserId" Data="users" ValueProperty="UserId" TextProperty="DisplayName"/>
-			</EditTemplate>
-		</RadzenGridColumn>
-		
+            <EditTemplate Context="rt">
+                <RadzenDropDown @bind-Value="rt.UserId" Data="users" ValueProperty="UserId" TextProperty="DisplayName" />
+            </EditTemplate>
+        </RadzenGridColumn>
+
         <RadzenGridColumn TItem="MyRecurringTasksResult" Title="Task Type" Property="TaskTypeId">
             <Template Context="rt">
                 <span>@rt.TaskTypeName</span>
             </Template>
-			<EditTemplate Context="rt">
-				<RadzenDropDown @bind-Value="rt.TaskTypeId" Data="taskTypes" ValueProperty="Id" TextProperty="Name"/>
-			</EditTemplate>
-		</RadzenGridColumn>
-		
+            <EditTemplate Context="rt">
+                <RadzenDropDown @bind-Value="rt.TaskTypeId" Data="taskTypes" ValueProperty="Id" TextProperty="Name" />
+            </EditTemplate>
+        </RadzenGridColumn>
+
         <RadzenGridColumn TItem="MyRecurringTasksResult" Title="Next Due Date" Property="NextDueDate">
             <Template Context="rt">
                 <span>@rt.NextDueDate.ToString("ddd M/d/yy")</span>
             </Template>
-			<EditTemplate Context="rt">
-				<RadzenDatePicker @bind-Value="rt.NextDueDate" DateFormat="M/d/yy"/>
-			</EditTemplate>
-		</RadzenGridColumn>
+            <EditTemplate Context="rt">
+                <RadzenDatePicker @bind-Value="rt.NextDueDate" DateFormat="M/d/yy" />
+            </EditTemplate>
+        </RadzenGridColumn>
 
         <RadzenGridColumn TItem="MyRecurringTasksResult" Title="Date Interval" Property="DateAddInterval">
             <Template Context="rt">
                 <span>every @rt.DateAddNumber @dateIntervals[rt.DateAddInterval]</span>
             </Template>
-			<EditTemplate Context="rt">
+            <EditTemplate Context="rt">
                 <div class="d-flex align-items-center">
-                    <RadzenNumeric @bind-Value="rt.DateAddNumber" Style="width:70px"/>
-				    <RadzenDropDown @bind-Value="rt.DateAddInterval" Data="dateIntervals" ValueProperty="Key" TextProperty="Value" Style="width:100px"/>
-                </div>                
-			</EditTemplate>
-		</RadzenGridColumn>
-		
-        <GridControls Grid="grid" DeleteRow="DeleteTask" TItem="MyRecurringTasksResult"/>
-	</Columns>
+                    <RadzenNumeric @bind-Value="rt.DateAddNumber" Style="width:70px" />
+                    <RadzenDropDown @bind-Value="rt.DateAddInterval" Data="dateIntervals" ValueProperty="Key" TextProperty="Value" Style="width:100px" />
+                </div>
+            </EditTemplate>
+        </RadzenGridColumn>
+
+        <GridControls Grid="grid" DeleteRow="DeleteTask" TItem="MyRecurringTasksResult" />
+    </Columns>
 </RadzenGrid>
 
-<GitHubLink/>
+<GitHubLink />
 
 @code {
     BlazorAO.Models.Workspace workspace;
