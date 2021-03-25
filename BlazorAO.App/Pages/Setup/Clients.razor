@@ -82,12 +82,9 @@
             onSuccess: async () => await RefreshList(),
             onException: (exc) => error.Message = exc.Message);
 
-    void InsertRow()
+    void InsertRow() => grid.InsertRow(new Client()
     {
-        grid.InsertRow(new Client()
-        {
-            WorkspaceId = Data.User?.WorkspaceId ?? 0,
-            IsActive = true
-        });
-    }
+        WorkspaceId = Data.User?.WorkspaceId ?? 0,
+        IsActive = true
+    });
 }
