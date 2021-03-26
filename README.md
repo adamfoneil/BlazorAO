@@ -17,7 +17,7 @@ In addition to showcasing my Blazor approaches in order to give you ideas for yo
 - The [App](https://github.com/adamfoneil/BlazorAO/tree/master/BlazorAO.App) project is a .NET5 Blazor Server project.
 - The [Models](https://github.com/adamfoneil/BlazorAO/tree/master/BlazorAO.Models) project is a .NET Standard 2.0 project, and provides the database structure.
 - I have a few modest custom [Components](https://github.com/adamfoneil/BlazorAO/tree/master/BlazorAO.App/Components), which are mainly small HTML helpers. But a few do something unique for this project:
-    - [GitHubLink](https://github.com/adamfoneil/BlazorAO/blob/master/BlazorAO.App/Components/GitHubLink.razor) causes a button to appear that links to the current page in GitHub. This is makes it easier to see the working page with the code side-by-side, sort of.
+    - [GitHubLink](https://github.com/adamfoneil/BlazorAO/blob/master/BlazorAO.App/Components/GitHubLink.razor) causes a button to appear that links to the current page in GitHub. This is makes it easier to see the working page with the code side-by-side.
     - [GridControls](https://github.com/adamfoneil/BlazorAO/blob/master/BlazorAO.App/Components/GridControls.razor) is how I apply standard edit, delete, save, and cancel buttons across all my data grids.
     - Many of my model classes have a `bool IsActive` property grid's often need to filter by. [ActiveFilter](https://github.com/adamfoneil/BlazorAO/blob/master/BlazorAO.App/Components/ActiveFilter.razor) provides a standard active/inactive filter control for use with all grids.
     - [ErrorMessage](https://github.com/adamfoneil/BlazorAO/blob/master/BlazorAO.App/Components/ErrorMessage.razor) provides my standard error display functionality used most everwhere.
