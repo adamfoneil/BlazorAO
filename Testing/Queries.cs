@@ -54,6 +54,9 @@ namespace Testing
         [TestMethod]
         public void SubmitHours() => QueryHelper.Test<SubmitHours>(GetConnection);
 
+        [TestMethod]
+        public void GetRecurringTask() => QueryHelper.Test<GetRecurringTask>(GetConnection);
+
         private SqlConnection GetConnection() => LocalDb.GetConnection("BlazorAO");
     }
 }

@@ -31,9 +31,9 @@ namespace BlazorAO.Models
         public DateTime NextDueDate { get; set; }
 
         [NotMapped]
-        public string UserDisplayName { get; set; }
+        public string TaskName { get; set; }
 
         [NotMapped]
-        public string TaskName { get; set; }
+        public int DaysAway { get; set; }
     }
 }

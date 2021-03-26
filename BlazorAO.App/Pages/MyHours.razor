@@ -19,6 +19,12 @@
         @if (pendingHours > 0)
         {
             var submitButtonText = $"Submit {pendingHours:n2} Hours";
+
+            if (nextDueDate != null)
+            {
+                <span class="mr-2">Due in about @nextDueDate.DaysAway days on @nextDueDate.NextDueDate.ToString("ddd M/d")</span>
+            }
+
             <RadzenButton Icon="file_upload" Text="@submitButtonText" Click="@((args) => SubmitHours(true))"/>
         }
 
@@ -93,6 +99,8 @@
 
 @code {
     ErrorMessage error;
+    RecurringTask nextDueDate;
+
     // grids
     RadzenGrid<MyHoursResult> grid;
     IEnumerable<MyHoursResult> data;
@@ -105,6 +113,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        nextDueDate = await Data.QuerySingleOrDefaultAsync(new GetRecurringTask() { WorkspaceId = Data.User?.WorkspaceId ?? 0, Name = RecurringTaskType.ApproveHours });
         allJobs = await Data.QueryAsync(new MyJobs() { WorkspaceId = Data.User?.WorkspaceId ?? 0 });
         clients = allJobs.GroupBy(row => row.ClientId).ToDictionary(grp => grp.Key, grp => grp.First().ClientName);
         jobSelect = allJobs.ToLookup(row => row.ClientId);

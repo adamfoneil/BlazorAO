@@ -21,12 +21,15 @@ namespace BlazorAO.Models
         /// open iconic image
         /// </summary>
         [MaxLength(50)]
-        public string Icon { get; set; }        
+        public string Icon { get; set; }
+
+        public const string CreateInvoices = "Create Invoices";
+        public const string ApproveHours = "Approve Hours";
 
         public static IEnumerable<RecurringTaskType> SeedData => new RecurringTaskType[]
         {
-            new RecurringTaskType() { Name = "Create Invoices", Url = "/Invoice", Icon = "oi-dollar" },
-            new RecurringTaskType() { Name = "Approve Hours", Url = "/ApproveHours", Icon = "oi-clipboard" }
+            new RecurringTaskType() { Name = CreateInvoices, Url = "/Invoice", Icon = "oi-dollar" },
+            new RecurringTaskType() { Name = ApproveHours, Url = "/ApproveHours", Icon = "oi-clipboard" }
         };
     }
 }
