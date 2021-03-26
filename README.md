@@ -31,6 +31,9 @@ In addition to showcasing my Blazor approaches in order to give you ideas for yo
     - [ErrorMessage](https://github.com/adamfoneil/BlazorAO/blob/master/BlazorAO.App/Components/ErrorMessage.razor) provides my standard error display functionality used most everwhere.
     - [Pager](https://github.com/adamfoneil/BlazorAO/blob/master/BlazorAO.App/Components/Pager.razor) provides paging capability.    
 
+- The [Testing](https://github.com/adamfoneil/BlazorAO/tree/master/Testing) is what it sounds like.
+    - The [Queries](https://github.com/adamfoneil/BlazorAO/blob/master/Testing/Queries.cs) tests show how I test inline SQL. For more info, see [DapperQX wiki](https://github.com/adamfoneil/Dapper.QX/wiki/Testing-Tips)
+
 ## More
 The [Wiki](https://github.com/adamfoneil/BlazorAO/wiki) goes into more detail, so please check there for more content.
 
