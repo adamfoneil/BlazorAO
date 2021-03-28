@@ -38,6 +38,7 @@ namespace BlazorAO.App.Queries
         protected override IEnumerable<ITestableQuery> GetTestCasesInner()
         {
             yield return new MyJobs() { WorkspaceId = 1 };
+            yield return new MyJobs() { WorkspaceId = 1, IsActive = true };
         }
     }
 }
