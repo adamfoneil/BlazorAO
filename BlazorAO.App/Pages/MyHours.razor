@@ -113,7 +113,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        nextDueDate = await Data.QuerySingleOrDefaultAsync(new GetRecurringTask() { WorkspaceId = Data.User?.WorkspaceId ?? 0, Name = RecurringTaskType.ApproveHours });
+        nextDueDate = await Data.QuerySingleOrDefaultAsync(new GetRecurringTask() 
+        { 
+            WorkspaceId = Data.User?.WorkspaceId ?? 0, 
+            Name = RecurringTaskType.ApproveHours 
+        });
         allJobs = await Data.QueryAsync(new MyJobs() { WorkspaceId = Data.User?.WorkspaceId ?? 0 });
         clients = allJobs.GroupBy(row => row.ClientId).ToDictionary(grp => grp.Key, grp => grp.First().ClientName);
         jobSelect = allJobs.ToLookup(row => row.ClientId);
