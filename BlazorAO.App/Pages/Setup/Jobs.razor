@@ -7,7 +7,7 @@
 <ErrorMessage @ref="error" />
 
 <div id="grid">
-    <div class="pr-2">       
+    <div class="pr-2">
         <div class="d-flex justify-content-between align-items-center mb-2">
             <div>
                 <RadzenButton Icon="add_circle_outline" Text="Add" Click="InsertRow" />
@@ -58,37 +58,37 @@
         </div>
 
         <RadzenGrid TItem="Budget" @ref="budgetGrid" Data="budgets" RowUpdate="SaveBudget" RowCreate="SaveBudget">
-	        <Columns>
-		        
+            <Columns>
+
                 <RadzenGridColumn TItem="Budget" Title="Year" Property="Year">
                     <Template Context="b">
                         <span>@b.Year</span>
                     </Template>
-			        <EditTemplate Context="b">
-				        <RadzenDropDown @bind-Value="b.Year" Data="years"/>
-			        </EditTemplate>
-		        </RadzenGridColumn>
-		        
+                    <EditTemplate Context="b">
+                        <RadzenDropDown @bind-Value="b.Year" Data="years" />
+                    </EditTemplate>
+                </RadzenGridColumn>
+
                 <RadzenGridColumn TItem="Budget" Title="Month" Property="Month">
                     <Template Context="b">
                         <span>@DateHelper.MonthName(b.Month, true)</span>
                     </Template>
-			        <EditTemplate Context="b">
-				        <RadzenDropDown @bind-Value="b.Month" Data="months" ValueProperty="Key" TextProperty="Value"/>
-			        </EditTemplate>
-		        </RadzenGridColumn>
-		        
+                    <EditTemplate Context="b">
+                        <RadzenDropDown @bind-Value="b.Month" Data="months" ValueProperty="Key" TextProperty="Value" />
+                    </EditTemplate>
+                </RadzenGridColumn>
+
                 <RadzenGridColumn TItem="Budget" Title="Amount" Property="Amount">
                     <Template Context="b">
                         <span>@b.Amount.ToString("c0")</span>
                     </Template>
-			        <EditTemplate Context="b">
-				        <RadzenNumeric @bind-Value="b.Amount"/>
-			        </EditTemplate>
-		        </RadzenGridColumn>
+                    <EditTemplate Context="b">
+                        <RadzenNumeric @bind-Value="b.Amount" />
+                    </EditTemplate>
+                </RadzenGridColumn>
 
-                <GridControls Grid="budgetGrid" DeleteRow="DeleteBudget" TItem="Budget"/>
-	        </Columns>
+                <GridControls Grid="budgetGrid" DeleteRow="DeleteBudget" TItem="Budget" />
+            </Columns>
         </RadzenGrid>
 
     </div>
