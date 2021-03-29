@@ -39,7 +39,7 @@
 
         var qry = from c in Db.Client select c;        
         qry.Where(c => c.WorkspaceId == 1);
-        qry.Include
+        //qry.Include
 
         clients = qry;
     }
