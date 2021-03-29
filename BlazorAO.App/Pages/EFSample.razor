@@ -1,0 +1,46 @@
+﻿@page "/EFSample"
+@inject BlazorAO.App.Data.ApplicationDbContext Db 
+
+<h3>EF Sample</h3>
+
+<ul>
+@foreach (var ws in workspaces)
+{
+    <li>@ws.Name</li>
+}
+</ul>
+
+<ul>
+    @foreach (var c in clients)
+    {
+        <li>@c.Name</li>
+    }
+</ul>
+
+@code { 
+    IEnumerable<Job> jobs;
+    IEnumerable<Client> clients;
+    IEnumerable<Workspace> workspaces;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();        
+
+        /*
+        jobs = from j in Db.Job
+               join c in Db.Client on j.ClientId equals c.Id
+               select new
+               {
+                   Job = j,
+                   ClientName = c.Name
+               };*/
+
+        workspaces = from w in Db.Workspace select w;
+
+        var qry = from c in Db.Client select c;        
+        qry.Where(c => c.WorkspaceId == 1);
+        qry.Include
+
+        clients = qry;
+    }
+}
