@@ -1,0 +1,20 @@
+﻿@page "/ApproveHours"
+@inject DapperCX<int, UserProfile> Data
+@attribute [Authorize]
+
+<h3>Approve Hours</h3>
+
+@code {
+    RecurringTask approveTask;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        approveTask = await Data.QuerySingleOrDefaultAsync(new GetRecurringTask() 
+        { 
+            WorkspaceId = Data.User?.WorkspaceId ?? 0, 
+            Name = RecurringTaskType.ApproveHours 
+        });
+    }
+}
