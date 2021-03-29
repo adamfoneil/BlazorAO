@@ -1,0 +1,59 @@
+﻿@page "/JobDashboard" 
+@inject DapperCX<int, UserProfile> Data
+@attribute [Authorize]
+
+<h3>Job Dashboard</h3>
+
+<RadzenGrid TItem="JobDashboardResult" AllowSorting="true" Data="data">
+	<Columns>
+		<RadzenGridColumn TItem="JobDashboardResult" Title="Client Name" Property="ClientName">
+			<Template Context="j">
+				<span>@j.ClientName</span>
+			</Template>
+		</RadzenGridColumn>
+		<RadzenGridColumn TItem="JobDashboardResult" Title="JobName" Property="JobName">
+			<Template Context="j">
+				<span>@j.JobName</span>
+			</Template>
+		</RadzenGridColumn>
+		<RadzenGridColumn TItem="JobDashboardResult" Title="Manager Name" Property="ManagerName">
+			<Template Context="j">
+				<span>@j.ManagerName</span>
+			</Template>
+		</RadzenGridColumn>
+		<RadzenGridColumn TItem="JobDashboardResult" Title="Balance $" Property="BalanceDollars">
+			<Template Context="j">
+				<span>@j.BalanceDollars</span>
+			</Template>
+		</RadzenGridColumn>
+		<RadzenGridColumn TItem="JobDashboardResult" Title="Balance %" Property="BalancePercent">
+			<Template Context="j">
+				<span>@j.BalancePercent</span>
+			</Template>
+		</RadzenGridColumn>
+	</Columns>
+</RadzenGrid>
+
+@code { 
+	// filter dropdowns
+    IEnumerable<Client> clients;
+	IEnumerable<UserProfile> managers;
+
+	// grid data
+    IEnumerable<JobDashboardResult> data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+		
+		await RefreshList();
+    }
+
+    async Task RefreshList()
+    {
+        data = await Data.QueryAsync(new Queries.JobDashboard()
+        {
+            WorkspaceId = Data.User?.WorkspaceId ?? 0
+        });
+    }
+}

@@ -53,12 +53,20 @@ namespace BlazorAO.App.Queries
 
         public int WorkspaceId { get; set; }
 
+        [Where("[j].[ClientId]=@clientId")]
+        public int? ClientId { get; set; }
+
+        [Where("[j].[ManagerId]=@managerId")]
+        public int? ManagerId { get; set; }
+
         [Where("[j].[IsActive]=@isActive")]
         public bool? IsActive { get; set; } = true;
 
         protected override IEnumerable<ITestableQuery> GetTestCasesInner()
         {
             yield return new JobDashboard() { WorkspaceId = 1 };
+            yield return new JobDashboard() { WorkspaceId = 1, ClientId = 1 };
+            yield return new JobDashboard() { WorkspaceId = 1, ManagerId = 1 };
         }
     }
 }
