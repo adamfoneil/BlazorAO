@@ -35,25 +35,24 @@
 </RadzenGrid>
 
 @code { 
-	// filter dropdowns
+    // filter dropdowns
     IEnumerable<Client> clients;
-	IEnumerable<UserProfile> managers;
+    IEnumerable<UserProfile> managers;
 
-	// grid data
+    // grid data
+    Queries.JobDashboard query = new Queries.JobDashboard();
     IEnumerable<JobDashboardResult> data;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-		
-		await RefreshList();
+
+        query.WorkspaceId = Data.User?.WorkspaceId ?? 0;
+        await RefreshList();
     }
 
     async Task RefreshList()
     {
-        data = await Data.QueryAsync(new Queries.JobDashboard()
-        {
-            WorkspaceId = Data.User?.WorkspaceId ?? 0
-        });
+        data = await Data.QueryAsync(query);
     }
 }
