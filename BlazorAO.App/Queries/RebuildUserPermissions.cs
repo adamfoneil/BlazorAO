@@ -8,7 +8,8 @@ namespace BlazorAO.App.Queries
     public class RebuildUserPermissions : TestableQuery<int>
     {
         public RebuildUserPermissions() : base(
-            @"DELETE [wup] FROM [dbo].[WorkspaceUserPermission] [wup] WHERE [UserId]=@userId AND [WorkspaceId]=@workspaceId;
+            @"DELETE [wup] FROM [dbo].[WorkspaceUserPermission] [wup] 
+            WHERE [UserId]=@userId AND [WorkspaceId]=@workspaceId;
 
             INSERT INTO [dbo].[WorkspaceUserPermission] (
                 [WorkspaceId], [UserId], [PermissionId], [CreatedBy], [DateCreated]
