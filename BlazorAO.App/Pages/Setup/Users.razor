@@ -47,16 +47,18 @@
         </RadzenGridColumn>
 
         <RadzenGridColumn Title="Roles" TItem="WorkspaceUsersResult">
-            <Template Context="u">
+            <Template Context="wu">
                 <ul class="list-unstyled">
-                    @foreach (var p in permissions[u.Id])
+                    @foreach (var p in permissions[wu.Id])
                     {
                         <li>@p.Name</li>
                     }
                 </ul>
             </Template>
-            <EditTemplate Context="emp">
-                <RadzenDropDown Multiple="true" Data="allPermissions" ValueProperty="Id" TextProperty="Name" @bind-Value="selectedPermissionIds" />
+            <EditTemplate Context="wu">
+                <RadzenDropDown Multiple="true" Data="allPermissions" 
+                                ValueProperty="Id" TextProperty="Name" 
+                                @bind-Value="selectedPermissionIds" />
             </EditTemplate>
         </RadzenGridColumn>
 
