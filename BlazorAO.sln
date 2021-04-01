@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorAO.Models", "BlazorAO
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing", "Testing\Testing.csproj", "{C6FEED8F-B605-4D42-AA2A-99543F830600}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SillyCodeGen", "SillyCodeGen\SillyCodeGen.csproj", "{96D97D91-78AB-448E-A35A-B082B49FAE2F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{C6FEED8F-B605-4D42-AA2A-99543F830600}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6FEED8F-B605-4D42-AA2A-99543F830600}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6FEED8F-B605-4D42-AA2A-99543F830600}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96D97D91-78AB-448E-A35A-B082B49FAE2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96D97D91-78AB-448E-A35A-B082B49FAE2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96D97D91-78AB-448E-A35A-B082B49FAE2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96D97D91-78AB-448E-A35A-B082B49FAE2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
