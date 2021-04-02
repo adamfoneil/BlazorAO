@@ -87,8 +87,7 @@ namespace BlazorAO.App.Services
         /// </summary>        
         private IEnumerable<ExcludeAction> GetModelSyncExclusions()
         {
-            var fileName = Path.Combine(_environment.ContentRootPath, "wwwroot", "data", "ModelSync.exclude.json");
-            var json = File.ReadAllText(fileName);
+            var json = GetModelSyncExclusionsJson();
 
             using (var doc = JsonDocument.Parse(json))
             {
@@ -98,6 +97,20 @@ namespace BlazorAO.App.Services
                     var itemJson = item.GetRawText();
                     yield return JsonSerializer.Deserialize<ExcludeAction>(itemJson);
                 }
+            }
+        }
+
+        private string GetModelSyncExclusionsJson()
+        {
+            var fileName = Path.Combine(_environment.ContentRootPath, "wwwroot", "data", "ModelSync.exclude.json");
+
+            try
+            {                
+                return File.ReadAllText(fileName);
+            }
+            catch (Exception exc)
+            {
+                throw new Exception($"Error reading json from {fileName}: {exc.Message}");
             }
         }
     }
