@@ -28,5 +28,14 @@ namespace BlazorAO.Models
 
         [NotMapped]
         public string JobDisplayName { get; set; }
+
+        [NotMapped]
+        public decimal? CurrentBudget { get; set; }
+
+        [NotMapped]
+        public decimal? TotalBudget { get; set; }
+
+        [NotMapped]
+        public decimal? TotalInvoices { get; set; }
     }
 }

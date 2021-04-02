@@ -66,8 +66,8 @@ namespace BlazorAO.App
 
             services.Configure<GitHubLinkOptions>(Configuration.GetSection("GitHubLink"));
             services.AddSingleton<AzureTester>();
-            // doesn't work after initial clone
-            //services.AddChangeTracking(connectionString, new DataModel());
+            
+            try { services.AddChangeTracking(connectionString, new DataModel()); } catch { /* do nothing, database might not exist */}            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

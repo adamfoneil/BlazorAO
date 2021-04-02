@@ -1,6 +1,7 @@
 ﻿using Dapper.QX.Abstract;
 using Dapper.QX.Attributes;
 using Dapper.QX.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace BlazorAO.App.Queries
@@ -17,20 +18,21 @@ namespace BlazorAO.App.Queries
         public int JobId { get; set; }
         public decimal? BalanceDollars { get; set; }
         public decimal? BalancePercent { get; set; }
+        public int BalancePercentValue => Convert.ToInt32((BalancePercent ?? 0) * 100);
     }
 
     public class JobDashboard : TestableQuery<JobDashboardResult>
     {
         public JobDashboard() : base(
-            @"WITH [source] AS (
+            $@"WITH [source] AS (
                 SELECT
                     [j].[ClientId],
                     [c].[Name] AS [ClientName],
                     [j].[Name] AS [JobName],
                     [j].[ManagerId],
                     [u].[LastName] + ', ' + [u].[FirstName] AS [ManagerName],
-                    (SELECT SUM([Amount]) FROM [dbo].[Budget] [b] WHERE [JobId]=[j].[Id] AND DATEFROMPARTS(YEAR(getdate()), MONTH(getdate()), 1) <= DATEFROMPARTS([b].[Year], [b].[Month], 1)) AS [CurrentBudget],
-                    (SELECT SUM([Amount]) FROM [dbo].[Invoice] WHERE [JobId]=[j].[Id]) AS [TotalInvoices],
+                    {MyJobs.CurrentBudgetQuery} AS [CurrentBudget],
+                    COALESCE({MyJobs.TotalInvoicesQuery}, 0) AS [TotalInvoices],
                     [j].[Id] AS [JobId]
                 FROM
                     [dbo].[Job] [j]
@@ -38,12 +40,12 @@ namespace BlazorAO.App.Queries
                     LEFT JOIN [dbo].[AspNetUsers] [u] ON [j].[ManagerId]=[u].[UserId]
                 WHERE
                     [c].[WorkspaceId]=@workspaceId AND
-                    [c].[IsActive]=1 {andWhere}
+                    [c].[IsActive]=1 {{andWhere}}
             ) SELECT
                 [src].*,
                 [CurrentBudget] - [TotalInvoices] AS [BalanceDollars],
                 CASE 
-                    WHEN [CurrentBudget] > 0 THEN [TotalInvoices] / [CurrentBudget]
+                    WHEN [CurrentBudget] > 0 THEN ([CurrentBudget]-[TotalInvoices]) / [CurrentBudget]
                     ELSE 0
                 END AS [BalancePercent]
             FROM

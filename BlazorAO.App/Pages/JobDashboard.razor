@@ -11,24 +11,34 @@
 				<span>@j.ClientName</span>
 			</Template>
 		</RadzenGridColumn>
+
 		<RadzenGridColumn TItem="JobDashboardResult" Title="JobName" Property="JobName">
 			<Template Context="j">
 				<span>@j.JobName</span>
 			</Template>
 		</RadzenGridColumn>
+
 		<RadzenGridColumn TItem="JobDashboardResult" Title="Manager Name" Property="ManagerName">
 			<Template Context="j">
 				<span>@j.ManagerName</span>
 			</Template>
 		</RadzenGridColumn>
+	
 		<RadzenGridColumn TItem="JobDashboardResult" Title="Balance $" Property="BalanceDollars">
 			<Template Context="j">
-				<span>@j.BalanceDollars</span>
+				<span>@string.Format("{0:c0}", j.BalanceDollars)</span>
 			</Template>
+			<FooterTemplate>
+				<span>@string.Format("{0:c0}", data?.Sum(row => row.BalanceDollars))</span>
+			</FooterTemplate>
 		</RadzenGridColumn>
+
 		<RadzenGridColumn TItem="JobDashboardResult" Title="Balance %" Property="BalancePercent">
 			<Template Context="j">
-				<span>@j.BalancePercent</span>
+				<div class="d-flex align-items-center">
+					<span>@string.Format("{0:p1}", j.BalancePercent)</span>
+					<progress value="@j.BalancePercentValue" max="100" class="ml-2 flex-grow-1"/>
+				</div>				
 			</Template>
 		</RadzenGridColumn>
 	</Columns>

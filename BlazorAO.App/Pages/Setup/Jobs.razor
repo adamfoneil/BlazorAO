@@ -53,7 +53,10 @@
                 <span>@selectedJob?.JobDisplayName</span>
             </div>
             <div>
-                <RadzenButton Icon="add_circle_outline" Text="Add" Click="InsertBudget" />
+                @if (selectedJob != null)
+                {
+                    <RadzenButton Icon="add_circle_outline" Text="Add" Click="InsertBudget" />
+                }                
             </div>
         </div>
 
@@ -85,10 +88,18 @@
                     <EditTemplate Context="b">
                         <RadzenNumeric @bind-Value="b.Amount" />
                     </EditTemplate>
+                    <FooterTemplate>
+                        @if (selectedJob != null)
+                        {
+                            <span>Total: @string.Format("{0:c0}", selectedJob.TotalBudget)</span>
+                            <br/>
+                            <span>Current: @string.Format("{0:c0}", selectedJob.CurrentBudget)</span>
+                        }                        
+                    </FooterTemplate>
                 </RadzenGridColumn>
 
                 <GridControls Grid="budgetGrid" DeleteRow="DeleteBudget" TItem="Budget" />
-            </Columns>
+            </Columns>            
         </RadzenGrid>
 
     </div>
@@ -147,10 +158,10 @@
 
     async Task RefreshBudgets()
     {
-        budgets = await Data.QueryAsync<Budget>(new { jobId = selectedJob.Id });
+        budgets = (await Data.QueryAsync<Budget>(new { jobId = selectedJob.Id })).OrderBy(row => row.Year).ThenBy(row => row.Month);
     }
 
-    void InsertBudget() => budgetGrid.InsertRow(new Budget() { JobId = selectedJob.Id });
+    void InsertBudget() => budgetGrid.InsertRow(new Budget() { JobId = selectedJob.Id, Year = DateTime.Today.Year });
 
     async Task SaveBudget(Budget row) =>
         await Data.TrySaveAsync<Budget>(row,
