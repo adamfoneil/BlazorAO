@@ -8,6 +8,9 @@ Most of my Blazor work is closed source, but I have a lot I want to share. This 
 
 Please see my [Getting Started](https://github.com/adamfoneil/BlazorAO/wiki/Getting-Started) topic for info on cloning and running this for the first time.
 
+## PowerPoint on Dapper
+Building an application like this entails some pretty specific data access opinions. I have a [PowerPoint walkthrough](https://1drv.ms/v/s!AvguHRnyJtWMmugqfwkiWSa0ZWlqUg?e=wuPfdv) outlining my data access approach with Dapper, along with my feelings about LINQ and Entity Framework. This will give you sense of where my head is at philsophically and practically in this space.
+
 ## About the app
 The sample app in this repo is a multi-tenant time entry, expense tracking and billing system intended for small companies. It's actually a from-scratch rebuild of my company's time entry system that I did originally in Classic ASP a long time ago and recently rewrote in Blazor Server. I couldn't share that app, and there were things I wanted to simplify about it for general-purpose consumption anyway.
 
