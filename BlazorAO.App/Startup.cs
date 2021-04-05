@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using ModelSync.Models;
 using System;
 using System.Net.Http;
@@ -66,7 +67,8 @@ namespace BlazorAO.App
 
             services.Configure<GitHubLinkOptions>(Configuration.GetSection("GitHubLink"));
             services.AddSingleton<AzureTester>();
-            
+            //services.AddSingleton<ILogger>(sp => )
+
             try { services.AddChangeTracking(connectionString, new DataModel()); } catch { /* do nothing, database might not exist */}            
         }
 
