@@ -1,6 +1,5 @@
 ﻿@page "/"
 @inject DbCreator DbCreator 
-@inject ILogger Logger 
 
 <div class="text-center">
     <h1 class="display-3">BlazorAO</h1>
@@ -88,7 +87,7 @@ else if (updateSuccess ?? false)
     {
         await base.OnInitializedAsync();
 
-        Logger.LogInformation("Index.razor OnInitialized");
+        //Logger.LogInformation("Index.razor OnInitialized");
 
         var dbstate = await DbCreator.DbExistsAsync();
         exists = dbstate.success;
