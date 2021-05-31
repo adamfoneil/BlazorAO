@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlazorAO.Models.Conventions
 {
-    public abstract class BaseTable : IAudit
+    public abstract class BaseTable : IModel<int>, IAudit
     {
         public int Id { get; set; }
 
